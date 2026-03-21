@@ -11,7 +11,9 @@ export const GITHUB_USERNAME = "brngates98";
 export const CONTACT = {
   email: "brian@briangates.tech",
   /** Full URL, or "" to hide */
-  linkedin: "" as string,
+  linkedin: "https://www.linkedin.com/in/brian-gates-177519228/",
+  /** GrafanaAgents GitHub repo — "" to hide */
+  grafanaAgents: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
   /** e.g. Mastodon profile URL, or "" */
   mastodon: "" as string,
 };
@@ -26,28 +28,36 @@ export type FeaturedProject = {
 };
 
 /**
- * Featured GitHub projects — replace with repos you want to highlight.
- * `url` should be the repo or project page on GitHub.
+ * Curated from your public GitHub (stars, recency, and fit for a portfolio).
+ * Edit anytime — see https://github.com/brngates98?tab=repositories
  */
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
+    name: "Intune2snipe",
+    description:
+      "Microsoft Intune → Snipe-IT: sync inventory and asset data through the Snipe-IT API.",
+    url: `https://github.com/${GITHUB_USERNAME}/Intune2snipe`,
+    tags: ["Intune", "Snipe-IT", "Python"],
+  },
+  {
+    name: "pve-nimble-plugin",
+    description:
+      "Proxmox VE storage plugin for HPE Nimble / Nimble SAN volumes as VM and container storage.",
+    url: `https://github.com/${GITHUB_USERNAME}/pve-nimble-plugin`,
+    tags: ["Proxmox", "Nimble", "Perl"],
+  },
+  {
+    name: "GrafanaAgents",
+    description:
+      "Shared Grafana Agent (and related) configs for metrics, logs, and observability pipelines.",
+    url: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
+    tags: ["Grafana", "Go", "Observability"],
+  },
+  {
     name: "brian-gates",
     description:
-      "This portfolio site — Astro, static build, GitHub Pages, custom domain.",
+      "This site — Astro, static build, GitHub Pages, custom domain briangates.tech.",
     url: `https://github.com/${GITHUB_USERNAME}/brian-gates`,
     tags: ["Astro", "GitHub Pages"],
-  },
-  {
-    name: "Your next project",
-    description:
-      "Add a one-line summary. Link to the GitHub repo or live demo.",
-    url: `https://github.com/${GITHUB_USERNAME}`,
-    tags: ["Topic"],
-  },
-  {
-    name: "Another highlight",
-    description: "Swap these placeholders for real repositories you are proud of.",
-    url: `https://github.com/${GITHUB_USERNAME}?tab=repositories`,
-    tags: ["Open source"],
   },
 ];

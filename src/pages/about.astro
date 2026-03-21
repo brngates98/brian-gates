@@ -1,6 +1,6 @@
 ---
 import SimplePage from '../layouts/SimplePage.astro';
-import { GITHUB_USERNAME } from '../consts';
+import { CONTACT, GITHUB_USERNAME } from '../consts';
 ---
 
 <SimplePage
@@ -26,6 +26,17 @@ import { GITHUB_USERNAME } from '../consts';
 		<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
 			GitHub — {`@${GITHUB_USERNAME}`}
 		</a>
+		{
+			CONTACT.grafanaAgents && (
+				<>
+					{' '}
+					·{' '}
+					<a href={CONTACT.grafanaAgents} target="_blank" rel="noopener noreferrer">
+						GrafanaAgents
+					</a>
+				</>
+			)
+		}
 	</p>
 	<p><a href="/">← Home</a></p>
 </SimplePage>

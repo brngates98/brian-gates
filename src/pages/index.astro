@@ -36,8 +36,7 @@ import {
 			<section class="section" aria-labelledby="projects-heading">
 				<h2 id="projects-heading">Featured projects</h2>
 				<p class="section-intro">
-					A few GitHub repos I like to highlight. Edit the list in{' '}
-					<code>src/consts.ts</code>.
+					Public repos I highlight — swap or reorder in <code>src/consts.ts</code>.
 				</p>
 				<ul class="project-grid">
 					{
@@ -71,6 +70,15 @@ import {
 						github.com/{GITHUB_USERNAME}
 					</a>
 				</p>
+				{
+					CONTACT.grafanaAgents && (
+						<p>
+							<a href={CONTACT.grafanaAgents} target="_blank" rel="noopener noreferrer">
+								GrafanaAgents (repo)
+							</a>
+						</p>
+					)
+				}
 				{
 					CONTACT.linkedin && (
 						<p>

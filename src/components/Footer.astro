@@ -10,6 +10,22 @@ const today = new Date();
 		<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 		<span class="sep">·</span>
 		<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">GitHub</a>
+		{
+			CONTACT.grafanaAgents && (
+				<>
+					<span class="sep">·</span>
+					<a href={CONTACT.grafanaAgents} target="_blank" rel="noopener noreferrer">Grafana Agents</a>
+				</>
+			)
+		}
+		{
+			CONTACT.linkedin && (
+				<>
+					<span class="sep">·</span>
+					<a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+				</>
+			)
+		}
 	</p>
 </footer>
 <style>
