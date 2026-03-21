@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import {
 	SITE_TITLE,
 	SITE_DESCRIPTION,
@@ -14,106 +12,96 @@ import { hrefContact } from '../utils/sitePaths';
 const contactPageHref = hrefContact(Astro.url.pathname);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
-		<Header />
-		<main class="flex-grow-1">
-			<section class="py-5 bg-white border-bottom">
-				<div class="container">
-					<div class="row justify-content-center">
-						<div class="col-lg-8 text-center">
-							<p class="font-monospace text-primary small text-uppercase fw-semibold mb-2 ls-wide">Portfolio</p>
-							<h1 class="display-5 fw-bold mb-3">Brian Gates</h1>
-							<p class="lead text-body-secondary mb-4">
-								Systems engineer, developer, Grafana Champion
-							</p>
-							<p class="text-start text-body-secondary mx-auto mb-4" style="max-width: 38rem;">
-								I design and run reliable systems with strong observability — Kubernetes, automation,
-								Python, and Go — and care about metrics that matter and operations that stay calm under
-								load. Outside of work I restore classic cars and experiment with data visualization.
-							</p>
-							<div class="d-flex flex-wrap gap-2 justify-content-center">
-								<a class="btn btn-primary px-4" href="about/">About</a>
-								<a class="btn btn-outline-primary px-4" href="services/">Services</a>
-								<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
-								<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section class="py-5" aria-labelledby="projects-heading">
-				<div class="container">
-					<h2 id="projects-heading" class="h3 fw-bold mb-4">Featured projects</h2>
-					<div class="row g-4">
-						{
-							FEATURED_PROJECTS.map((p) => (
-								<div class="col-md-6 col-lg-4">
-									<div class="card h-100 shadow-sm border-0">
-										<div class="card-body d-flex flex-column">
-											<h3 class="h5 card-title font-monospace">{p.name}</h3>
-											<p class="card-text text-body-secondary small flex-grow-1">{p.description}</p>
-											{p.tags && p.tags.length > 0 && (
-												<div class="d-flex flex-wrap gap-1 mb-3">
-													{p.tags.map((t) => (
-														<span class="badge rounded-pill text-bg-light border">{t}</span>
-													))}
-												</div>
-											)}
-											<a
-												href={p.url}
-												class="stretched-link fw-semibold small text-primary text-decoration-none"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												Code on GitHub →
-											</a>
-										</div>
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<section class="py-5 bg-white border-top" id="contact" aria-labelledby="contact-heading">
-				<div class="container text-center">
-					<h2 id="contact-heading" class="h3 fw-bold mb-4">Contact</h2>
-					<p class="text-body-secondary mx-auto mb-4" style="max-width: 28rem;">
-						Prefer a form? <a href={contactPageHref}>Send a message</a> — or use the links below.
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="py-5 bg-white border-bottom">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<p class="font-monospace text-primary small text-uppercase fw-semibold mb-2 ls-wide">Portfolio</p>
+					<h1 class="display-5 fw-bold mb-3">Brian Gates</h1>
+					<p class="lead text-body-secondary mb-4">
+						Systems engineer, developer, Grafana Champion
+					</p>
+					<p class="text-start text-body-secondary mx-auto mb-4" style="max-width: 38rem;">
+						I design and run reliable systems with strong observability — Kubernetes, automation,
+						Python, and Go — and care about metrics that matter and operations that stay calm under
+						load. Outside of work I restore classic cars and experiment with data visualization.
 					</p>
 					<div class="d-flex flex-wrap gap-2 justify-content-center">
-						<a
-							class="btn btn-dark"
-							href={`https://github.com/${GITHUB_USERNAME}`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							GitHub
-						</a>
-						{
-							CONTACT.linkedin && (
-								<a class="btn btn-primary" href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">
-									LinkedIn
-								</a>
-							)
-						}
-						<a class="btn btn-outline-primary" href={`mailto:${CONTACT.email}`}>
-							{CONTACT.email}
-						</a>
+						<a class="btn btn-primary px-4" href="about/">About</a>
+						<a class="btn btn-outline-primary px-4" href="services/">Services</a>
+						<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
+						<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
 					</div>
 				</div>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+			</div>
+		</div>
+	</section>
+
+	<section class="py-5" aria-labelledby="projects-heading">
+		<div class="container">
+			<h2 id="projects-heading" class="h3 fw-bold mb-4">Featured projects</h2>
+			<div class="row g-4">
+				{
+					FEATURED_PROJECTS.map((p) => (
+						<div class="col-md-6 col-lg-4">
+							<div class="card h-100 shadow-sm border-0">
+								<div class="card-body d-flex flex-column">
+									<h3 class="h5 card-title font-monospace">{p.name}</h3>
+									<p class="card-text text-body-secondary small flex-grow-1">{p.description}</p>
+									{p.tags && p.tags.length > 0 && (
+										<div class="d-flex flex-wrap gap-1 mb-3">
+											{p.tags.map((t) => (
+												<span class="badge rounded-pill text-bg-light border">{t}</span>
+											))}
+										</div>
+									)}
+									<a
+										href={p.url}
+										class="stretched-link fw-semibold small text-primary text-decoration-none"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Code on GitHub →
+									</a>
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="py-5 bg-white border-top" id="contact" aria-labelledby="contact-heading">
+		<div class="container text-center">
+			<h2 id="contact-heading" class="h3 fw-bold mb-4">Contact</h2>
+			<p class="text-body-secondary mx-auto mb-4" style="max-width: 28rem;">
+				Prefer a form? <a href={contactPageHref}>Send a message</a> — or use the links below.
+			</p>
+			<div class="d-flex flex-wrap gap-2 justify-content-center">
+				<a
+					class="btn btn-dark"
+					href={`https://github.com/${GITHUB_USERNAME}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					GitHub
+				</a>
+				{
+					CONTACT.linkedin && (
+						<a class="btn btn-primary" href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">
+							LinkedIn
+						</a>
+					)
+				}
+				<a class="btn btn-outline-primary" href={`mailto:${CONTACT.email}`}>
+					{CONTACT.email}
+				</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
 
 <style is:global>
 	.ls-wide {

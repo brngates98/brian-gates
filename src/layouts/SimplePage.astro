@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from './BaseLayout.astro';
 
 interface Props {
 	title: string;
@@ -11,22 +9,12 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-	</head>
-	<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
-		<Header />
-		<main class="flex-grow-1">
-			<div class="container py-4 py-md-5">
-				<div class="row justify-content-center">
-					<div class="col-lg-8">
-						<slot />
-					</div>
-				</div>
+<BaseLayout title={title} description={description}>
+	<div class="container py-4 py-md-5">
+		<div class="row justify-content-center">
+			<div class="col-lg-8">
+				<slot />
 			</div>
-		</main>
-		<Footer />
-	</body>
-</html>
+		</div>
+	</div>
+</BaseLayout>
