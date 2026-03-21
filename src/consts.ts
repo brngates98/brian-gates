@@ -48,4 +48,11 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     url: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
     tags: ["Grafana", "Go", "Observability"],
   },
+  {
+    name: "UniPoller",
+    description:
+      "Collects UniFi controller data for Grafana, InfluxDB, Prometheus, and more — I am a contributor to this open-source project.",
+    url: "https://github.com/unpoller/unpoller",
+    tags: ["UniFi", "Go", "Observability", "Contributor"],
+  },
 ];
