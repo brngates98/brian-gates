@@ -63,22 +63,10 @@ import {
 			<section class="section section-contact" id="contact" aria-labelledby="contact-heading">
 				<h2 id="contact-heading">Contact</h2>
 				<p>
-					<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-				</p>
-				<p>
 					<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
 						github.com/{GITHUB_USERNAME}
 					</a>
 				</p>
-				{
-					CONTACT.grafanaAgents && (
-						<p>
-							<a href={CONTACT.grafanaAgents} target="_blank" rel="noopener noreferrer">
-								GrafanaAgents (repo)
-							</a>
-						</p>
-					)
-				}
 				{
 					CONTACT.linkedin && (
 						<p>
@@ -88,6 +76,9 @@ import {
 						</p>
 					)
 				}
+				<p>
+					<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+				</p>
 			</section>
 		</main>
 		<Footer />

@@ -7,17 +7,7 @@ const today = new Date();
 <footer>
 	<p class="footer-line">&copy; {today.getFullYear()} Brian Gates</p>
 	<p class="footer-line">
-		<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-		<span class="sep">·</span>
 		<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">GitHub</a>
-		{
-			CONTACT.grafanaAgents && (
-				<>
-					<span class="sep">·</span>
-					<a href={CONTACT.grafanaAgents} target="_blank" rel="noopener noreferrer">Grafana Agents</a>
-				</>
-			)
-		}
 		{
 			CONTACT.linkedin && (
 				<>
@@ -26,6 +16,8 @@ const today = new Date();
 				</>
 			)
 		}
+		<span class="sep">·</span>
+		<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 	</p>
 </footer>
 <style>

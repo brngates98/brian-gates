@@ -12,8 +12,6 @@ export const CONTACT = {
   email: "brian@briangates.tech",
   /** Full URL, or "" to hide */
   linkedin: "https://www.linkedin.com/in/brian-gates-177519228/",
-  /** GrafanaAgents GitHub repo — "" to hide */
-  grafanaAgents: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
   /** e.g. Mastodon profile URL, or "" */
   mastodon: "" as string,
 };
