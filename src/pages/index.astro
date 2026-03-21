@@ -9,6 +9,9 @@ import {
 	CONTACT,
 	GITHUB_USERNAME,
 } from '../consts';
+import { hrefContact } from '../utils/sitePaths';
+
+const contactPageHref = hrefContact(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -36,7 +39,8 @@ import {
 							<div class="d-flex flex-wrap gap-2 justify-content-center">
 								<a class="btn btn-primary px-4" href="about/">About</a>
 								<a class="btn btn-outline-primary px-4" href="services/">Services</a>
-								<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Contact</a>
+								<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
+								<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
 							</div>
 						</div>
 					</div>
@@ -81,6 +85,9 @@ import {
 			<section class="py-5 bg-white border-top" id="contact" aria-labelledby="contact-heading">
 				<div class="container text-center">
 					<h2 id="contact-heading" class="h3 fw-bold mb-4">Contact</h2>
+					<p class="text-body-secondary mx-auto mb-4" style="max-width: 28rem;">
+						Prefer a form? <a href={contactPageHref}>Send a message</a> — or use the links below.
+					</p>
 					<div class="d-flex flex-wrap gap-2 justify-content-center">
 						<a
 							class="btn btn-dark"

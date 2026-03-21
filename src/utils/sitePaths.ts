@@ -14,9 +14,13 @@ export function isServicesPage(pathname: string): boolean {
   return pathname.includes("/services/") || pathname.endsWith("/services");
 }
 
-/** About or Services (one level below site root). */
+export function isContactPage(pathname: string): boolean {
+  return pathname.includes("/contact/") || pathname.endsWith("/contact");
+}
+
+/** About, Services, or Contact (one level below site root). */
 export function inSiteSubpage(pathname: string): boolean {
-  return isAboutPage(pathname) || isServicesPage(pathname);
+  return isAboutPage(pathname) || isServicesPage(pathname) || isContactPage(pathname);
 }
 
 export function hrefHome(pathname: string): string {
@@ -25,14 +29,20 @@ export function hrefHome(pathname: string): string {
 
 export function hrefAbout(pathname: string): string {
   if (isAboutPage(pathname)) return "./";
-  if (isServicesPage(pathname)) return "../about/";
+  if (isServicesPage(pathname) || isContactPage(pathname)) return "../about/";
   return "about/";
 }
 
 export function hrefServices(pathname: string): string {
   if (isServicesPage(pathname)) return "./";
-  if (isAboutPage(pathname)) return "../services/";
+  if (isAboutPage(pathname) || isContactPage(pathname)) return "../services/";
   return "services/";
+}
+
+export function hrefContact(pathname: string): string {
+  if (isContactPage(pathname)) return "./";
+  if (isAboutPage(pathname) || isServicesPage(pathname)) return "../contact/";
+  return "contact/";
 }
 
 export function hrefFavicon(pathname: string): string {

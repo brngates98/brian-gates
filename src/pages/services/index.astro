@@ -1,6 +1,9 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
 import { CONTACT, GITHUB_USERNAME } from '../../consts';
+import { hrefAbout, hrefContact, hrefHome } from '../../utils/sitePaths';
+
+const pathname = Astro.url.pathname;
 ---
 
 <SimplePage
@@ -28,12 +31,14 @@ import { CONTACT, GITHUB_USERNAME } from '../../consts';
 		<li>
 			<strong>Virtualization &amp; platforms</strong> — <strong>VMware</strong> vSphere environments;
 			<strong>Proxmox VE</strong> clusters, storage, and automation; integration with backup and monitoring
-			stacks.
+			stacks. I have planned and executed an <strong>enterprise VMware to Proxmox VE migration</strong> end to
+			end — discovery, storage mapping, cutover, and validation.
 		</li>
 		<li>
-			<strong>Storage / SAN</strong> — Experience across <strong>multiple vendors</strong> (including enterprise
-			block storage, VMware and Proxmox integration, and capacity planning). Comfortable working with vendor
-			teams and internal stakeholders on migrations and performance.
+			<strong>Storage / SAN</strong> — Hands-on with <strong>Dell EMC VNX5300</strong>, <strong>Pure Storage</strong>,
+			<strong>HPE Nimble</strong>, <strong>QNAP</strong>, <strong>TrueNAS</strong>, and similar platforms across
+			block, appliance, and unified storage; VMware and Proxmox integration, migrations, and capacity planning.
+			Comfortable coordinating with vendors and internal teams on performance and change windows.
 		</li>
 		<li>
 			<strong>Observability &amp; automation</strong> — Grafana, metrics and logging pipelines, Kubernetes and
@@ -50,14 +55,14 @@ import { CONTACT, GITHUB_USERNAME } from '../../consts';
 	</p>
 
 	<p class="mb-4">
-		<strong>Next step:</strong>
+		<strong>Next step:</strong> use the <a href={hrefContact(pathname)}>contact form</a> or email{' '}
 		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-		— send a short note about your timeline, stack, and what you need. I will respond with availability and
-		whether we are a good fit.
+		— include timeline, stack, and what you need. I will respond with availability and whether we are a good fit.
 	</p>
 
 	<p class="mb-0 d-flex flex-wrap gap-2">
-		<a class="btn btn-outline-primary btn-sm" href="../">← Home</a>
-		<a class="btn btn-outline-secondary btn-sm" href="../about/">About</a>
+		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefContact(pathname)}>Contact</a>
 	</p>
 </SimplePage>

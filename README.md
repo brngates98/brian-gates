@@ -36,6 +36,12 @@ This repo is a **project site** (not `username.github.io`), so GitHub also serve
 
 Edit site copy, `GITHUB_USERNAME`, `FEATURED_PROJECTS`, and `CONTACT` in `src/consts.ts`. Canonical URL and sitemap use `https://briangates.tech` from `astro.config.mjs`.
 
+## Contact form
+
+The **Contact** page (`/contact/`) posts through [FormSubmit](https://formsubmit.co/) to `CONTACT.email` by default — no API key. The first time someone submits, you may need to complete FormSubmit’s one-time email verification. The form redirects back to `https://briangates.tech/contact/?thanks=1` (set in `SITE_URL` in `src/consts.ts`).
+
+Optionally use [Web3Forms](https://web3forms.com/) instead: copy `.env.example` to `.env`, set `PUBLIC_WEB3FORMS_ACCESS_KEY`, and rebuild. For GitHub Pages, add a repository secret **`WEB3FORMS_ACCESS_KEY`** with the same value so the deploy workflow passes it into `npm run build`.
+
 ## Credits
 
 Layout and typography are inspired by [Bear Blog](https://github.com/HermanMartinus/bearblog/).

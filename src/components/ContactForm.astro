@@ -1,0 +1,172 @@
+---
+import { CONTACT, SITE_URL } from '../consts';
+
+const web3Key = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const useWeb3 = web3Key.length > 0;
+const formSubmitAction = `https://formsubmit.co/${encodeURIComponent(CONTACT.email)}`;
+const nextUrl = `${SITE_URL.replace(/\/$/, '')}/contact/?thanks=1`;
+---
+
+<div class="contact-form-wrap">
+	{
+		useWeb3 ? (
+			<>
+				<form id="contact-form-web3" class="needs-validation" novalidate>
+					<div class="mb-3">
+						<label for="cf-name" class="form-label">
+							Name
+						</label>
+						<input
+							type="text"
+							class="form-control"
+							id="cf-name"
+							name="name"
+							required
+							autocomplete="name"
+						/>
+					</div>
+					<div class="mb-3">
+						<label for="cf-email" class="form-label">
+							Email
+						</label>
+						<input
+							type="email"
+							class="form-control"
+							id="cf-email"
+							name="email"
+							required
+							autocomplete="email"
+						/>
+					</div>
+					<div class="mb-3">
+						<label for="cf-subject" class="form-label">
+							Subject <span class="text-body-secondary fw-normal">(optional)</span>
+						</label>
+						<input type="text" class="form-control" id="cf-subject" name="subject" />
+					</div>
+					<div class="mb-3">
+						<label for="cf-message" class="form-label">
+							Message
+						</label>
+						<textarea class="form-control" id="cf-message" name="message" rows="6" required />
+					</div>
+					<div id="contact-form-status" class="mb-3" role="status" aria-live="polite" />
+					<button type="submit" class="btn btn-primary" id="contact-form-submit">
+						Send message
+					</button>
+				</form>
+				<script is:inline define:vars={{ web3Key }}>
+					(function () {
+						const form = document.getElementById('contact-form-web3');
+						const statusEl = document.getElementById('contact-form-status');
+						const submitBtn = document.getElementById('contact-form-submit');
+						if (!form || !statusEl || !submitBtn) return;
+
+						form.addEventListener('submit', async function (e) {
+							e.preventDefault();
+							if (!form.checkValidity()) {
+								form.classList.add('was-validated');
+								return;
+							}
+							statusEl.innerHTML = '';
+							submitBtn.disabled = true;
+							const prevText = submitBtn.textContent;
+							submitBtn.textContent = 'Sending…';
+
+							const fd = new FormData(form);
+							const subject = fd.get('subject');
+							const payload = {
+								access_key: web3Key,
+								name: fd.get('name'),
+								email: fd.get('email'),
+								message: fd.get('message'),
+								subject:
+									(subject && String(subject).trim()) ||
+									'Message from briangates.tech contact form',
+							};
+
+							try {
+								const res = await fetch('https://api.web3forms.com/submit', {
+									method: 'POST',
+									headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+									body: JSON.stringify(payload),
+								});
+								const data = await res.json().catch(function () {
+									return {};
+								});
+								if (data.success) {
+									statusEl.innerHTML =
+										'<div class="alert alert-success mb-0">Thanks — your message was sent. I will reply soon.</div>';
+									form.reset();
+									form.classList.remove('was-validated');
+								} else {
+									statusEl.innerHTML =
+										'<div class="alert alert-danger mb-0">Something went wrong. Please try again or email directly.</div>';
+								}
+							} catch {
+								statusEl.innerHTML =
+									'<div class="alert alert-danger mb-0">Network error. Please email directly.</div>';
+							} finally {
+								submitBtn.disabled = false;
+								submitBtn.textContent = prevText;
+							}
+						});
+					})();
+				</script>
+			</>
+		) : (
+			<>
+				<form action={formSubmitAction} method="POST">
+					<input type="hidden" name="_next" value={nextUrl} />
+					<input type="hidden" name="_subject" value="Message from briangates.tech contact form" />
+					<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+					<div class="mb-3">
+						<label for="fs-name" class="form-label">
+							Name
+						</label>
+						<input
+							type="text"
+							class="form-control"
+							id="fs-name"
+							name="name"
+							required
+							autocomplete="name"
+						/>
+					</div>
+					<div class="mb-3">
+						<label for="fs-email" class="form-label">
+							Email
+						</label>
+						<input
+							type="email"
+							class="form-control"
+							id="fs-email"
+							name="email"
+							required
+							autocomplete="email"
+						/>
+					</div>
+					<div class="mb-3">
+						<label for="fs-subject" class="form-label">
+							Subject <span class="text-body-secondary fw-normal">(optional)</span>
+						</label>
+						<input type="text" class="form-control" id="fs-subject" name="subject" />
+					</div>
+					<div class="mb-3">
+						<label for="fs-message" class="form-label">
+							Message
+						</label>
+						<textarea class="form-control" id="fs-message" name="message" rows="6" required />
+					</div>
+					<button type="submit" class="btn btn-primary">
+						Send message
+					</button>
+				</form>
+				<p class="form-text text-body-secondary small mt-3 mb-0">
+					Delivered via FormSubmit. On your first message you may need to confirm your email once in their
+					verification step.
+				</p>
+			</>
+		)
+	}
+</div>

@@ -1,0 +1,43 @@
+---
+import SimplePage from '../../layouts/SimplePage.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { CONTACT } from '../../consts';
+import { hrefAbout, hrefHome, hrefServices } from '../../utils/sitePaths';
+
+const pathname = Astro.url.pathname;
+const thanks = Astro.url.searchParams.has('thanks');
+---
+
+<SimplePage
+	title="Contact — Brian Gates"
+	description="Send a message to Brian Gates — contract inquiries, infrastructure, and development."
+>
+	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">Contact</h1>
+
+	{
+		thanks && (
+			<div class="alert alert-success mb-4" role="status">
+				Thanks — your message was sent. I will get back to you soon.
+			</div>
+		)
+	}
+
+	<p class="lead text-body-secondary mb-4">
+		Use the form below for project inquiries, consulting, or anything else that fits what you have read on the
+		site. You can also reach me directly at{' '}
+		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
+	</p>
+
+	<div class="card shadow-sm border-0 mb-4">
+		<div class="card-body p-4">
+			<h2 class="h5 fw-bold mb-3">Send a message</h2>
+			<ContactForm />
+		</div>
+	</div>
+
+	<p class="mb-0 d-flex flex-wrap gap-2">
+		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefServices(pathname)}>Services</a>
+	</p>
+</SimplePage>
