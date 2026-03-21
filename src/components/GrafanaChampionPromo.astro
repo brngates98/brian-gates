@@ -5,29 +5,23 @@ import { GRAFANA } from '../consts';
 <div class="grafana-promo card border-0 shadow-sm overflow-hidden">
 	<div class="card-body p-4 p-md-4">
 		<div class="row align-items-center g-4">
-			<div class="col-sm-auto text-center">
-				<figure class="mb-0 grafana-promo__figure">
-					<a
-						href={GRAFANA.champions}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="grafana-promo__logo-link d-inline-block"
-					>
-						<img
-							class="grafana-promo__logo img-fluid"
-							src={GRAFANA.championLogo}
-							alt="Grafana Champion"
-							width="625"
-							height="622"
-							loading="lazy"
-							decoding="async"
-						/>
-					</a>
-					<figcaption class="small text-body-secondary mt-2 mb-0 px-1">
-						Grafana Champion program artwork from{' '}
-						<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana Labs</a>
-					</figcaption>
-				</figure>
+			<div class="col-sm-auto text-center grafana-promo__brand">
+				<a
+					href={GRAFANA.champions}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="grafana-promo__logo-link d-inline-block"
+				>
+					<img
+						class="grafana-promo__logo img-fluid"
+						src={GRAFANA.championLogo}
+						alt="Grafana Champion"
+						width="625"
+						height="622"
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
 			</div>
 			<div class="col">
 				<p class="text-uppercase small fw-semibold text-primary mb-1 ls-wide">Community</p>
@@ -61,7 +55,7 @@ import { GRAFANA } from '../consts';
 		background: linear-gradient(135deg, #fafafa 0%, #f0f4f8 100%);
 		border: 1px solid rgba(0, 0, 0, 0.06) !important;
 	}
-	.grafana-promo__figure {
+	.grafana-promo__brand {
 		max-width: min(100%, 16rem);
 		margin-left: auto;
 		margin-right: auto;
