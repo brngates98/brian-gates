@@ -20,6 +20,7 @@ import {
 		<Header />
 		<main>
 			<section class="hero">
+				<div class="hero-accent" aria-hidden="true"></div>
 				<h1>Brian Gates</h1>
 				<p class="hero-tagline">Systems engineer, developer, Grafana Champion</p>
 				<p class="hero-lede">
@@ -50,6 +51,7 @@ import {
 								)}
 								<a href={p.url} class="project-link" target="_blank" rel="noopener noreferrer">
 									Code on GitHub
+									<span class="project-link-arrow" aria-hidden="true">→</span>
 								</a>
 							</li>
 						))
@@ -59,23 +61,26 @@ import {
 
 			<section class="section section-contact" id="contact" aria-labelledby="contact-heading">
 				<h2 id="contact-heading">Contact</h2>
-				<p>
-					<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
+				<div class="contact-links">
+					<a
+						class="contact-pill"
+						href={`https://github.com/${GITHUB_USERNAME}`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						GitHub
 					</a>
-				</p>
-				{
-					CONTACT.linkedin && (
-						<p>
-							<a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">
+					{
+						CONTACT.linkedin && (
+							<a class="contact-pill" href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">
 								LinkedIn
 							</a>
-						</p>
-					)
-				}
-				<p>
-					<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-				</p>
+						)
+					}
+					<a class="contact-pill contact-pill-primary" href={`mailto:${CONTACT.email}`}>
+						{CONTACT.email}
+					</a>
+				</div>
 			</section>
 		</main>
 		<Footer />
@@ -84,109 +89,194 @@ import {
 
 <style>
 	.hero {
-		padding: 2rem 0 2.5rem;
+		position: relative;
+		padding: 0.5rem 0 2.75rem;
 		text-align: center;
 	}
+	.hero-accent {
+		width: 3rem;
+		height: 4px;
+		margin: 0 auto 1.35rem;
+		border-radius: 4px;
+		background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+		opacity: 0.9;
+	}
 	.hero h1 {
-		font-size: clamp(2rem, 5vw, 2.75rem);
-		margin-bottom: 0.35rem;
+		font-size: clamp(2.1rem, 5.5vw, 2.85rem);
+		margin-bottom: 0.5rem;
+		letter-spacing: -0.03em;
 	}
 	.hero-tagline {
-		font-size: 1.15rem;
+		font-size: 1.05rem;
 		color: rgb(var(--gray));
-		margin: 0 0 1.25rem;
+		margin: 0 0 1.35rem;
+		font-weight: 500;
 	}
 	.hero-lede {
 		max-width: 38rem;
-		margin: 0 auto 1.5rem;
+		margin: 0 auto 1.65rem;
 		text-align: left;
+		color: rgb(var(--gray-dark));
+		line-height: 1.7;
 	}
 	.hero-cta {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.75rem;
+		gap: 0.85rem;
 		justify-content: center;
 		margin: 0;
 	}
 	.button {
 		display: inline-block;
-		padding: 0.55rem 1.25rem;
+		padding: 0.62rem 1.4rem;
 		background: var(--accent);
 		color: #fff !important;
-		border-radius: 6px;
+		border-radius: 999px;
 		text-decoration: none;
-		font-size: 0.95rem;
+		font-size: 0.92rem;
+		font-weight: 600;
+		box-shadow: 0 2px 8px rgba(49, 84, 184, 0.25);
+		transition:
+			background 0.15s ease,
+			box-shadow 0.15s ease,
+			transform 0.15s ease;
 	}
 	.button:hover {
 		background: var(--accent-dark);
 		color: #fff !important;
+		box-shadow: 0 4px 14px rgba(49, 84, 184, 0.32);
+		transform: translateY(-1px);
 	}
 	.button-secondary {
-		background: transparent;
+		background: #fff;
 		color: var(--accent) !important;
-		border: 2px solid var(--accent);
+		border: 2px solid rgba(49, 84, 184, 0.35);
+		box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
 	}
 	.button-secondary:hover {
-		background: rgba(var(--black), 4%);
+		background: var(--accent-soft);
+		border-color: var(--accent);
 		color: var(--accent-dark) !important;
-		border-color: var(--accent-dark);
+		transform: translateY(-1px);
 	}
 	.section {
-		padding: 2rem 0;
-		border-top: 1px solid rgb(var(--gray-light));
+		padding: 2.35rem 0;
+		border-top: 1px solid rgba(var(--gray-light), 0.9);
 	}
 	.section h2 {
-		font-size: 1.65rem;
-		margin-bottom: 0.75rem;
+		font-size: 1.5rem;
+		margin-bottom: 1.35rem;
+		letter-spacing: -0.02em;
 	}
 	.project-grid {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		display: grid;
-		gap: 1.25rem;
-		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 1.35rem;
+		grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
 	}
 	.project-card {
+		display: flex;
+		flex-direction: column;
 		background: #fff;
-		border: 1px solid rgb(var(--gray-light));
-		border-radius: 10px;
-		padding: 1.15rem 1.25rem;
+		border: 1px solid rgba(var(--gray-light), 0.95);
+		border-radius: var(--radius);
+		padding: 1.35rem 1.4rem 1.25rem;
 		box-shadow: var(--box-shadow);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			border-color 0.2s ease;
+	}
+	.project-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-hover);
+		border-color: rgba(49, 84, 184, 0.12);
 	}
 	.project-card h3 {
-		font-size: 1.2rem;
-		margin-bottom: 0.5rem;
+		font-size: 1.15rem;
+		margin-bottom: 0.55rem;
+		color: rgb(var(--black));
 	}
 	.project-card > p {
-		margin: 0 0 0.85rem;
-		font-size: 0.95rem;
-		line-height: 1.55;
+		flex: 1;
+		margin: 0 0 1rem;
+		font-size: 0.94rem;
+		line-height: 1.58;
+		color: rgb(var(--gray-dark));
 	}
 	.project-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.4rem;
+		gap: 0.45rem;
 		list-style: none;
 		padding: 0;
-		margin: 0 0 0.85rem;
+		margin: 0 0 1rem;
 	}
 	.project-tags li {
-		font-size: 0.8rem;
-		padding: 0.2rem 0.5rem;
-		background: rgb(var(--gray-light));
-		border-radius: 4px;
-		color: rgb(var(--gray-dark));
+		font-size: 0.75rem;
+		font-weight: 600;
+		padding: 0.28rem 0.55rem;
+		background: var(--accent-soft);
+		border-radius: 6px;
+		color: var(--accent-dark);
+		letter-spacing: 0.01em;
 	}
 	.project-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 		font-weight: 600;
 		font-size: 0.9rem;
+		text-decoration: none;
+		margin-top: auto;
+	}
+	.project-link:hover .project-link-arrow {
+		transform: translateX(3px);
+	}
+	.project-link-arrow {
+		display: inline-block;
+		transition: transform 0.2s ease;
 	}
 	.section-contact {
 		text-align: center;
-		padding-bottom: 3rem;
+		padding-bottom: 1rem;
 	}
-	.section-contact p {
-		margin: 0.35rem 0;
+	.section-contact h2 {
+		margin-bottom: 1.25rem;
+	}
+	.contact-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		justify-content: center;
+		align-items: center;
+	}
+	.contact-pill {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.55rem 1.1rem;
+		border-radius: 999px;
+		font-size: 0.92rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: rgb(var(--gray-dark)) !important;
+		background: #fff;
+		border: 1px solid rgba(var(--gray-light), 1);
+		box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+		transition:
+			background 0.15s ease,
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+	.contact-pill:hover {
+		border-color: rgba(49, 84, 184, 0.35);
+		background: var(--accent-soft);
+		color: var(--accent-dark) !important;
+	}
+	.contact-pill-primary {
+		border-color: rgba(49, 84, 184, 0.22);
+		background: linear-gradient(180deg, #fff 0%, #f8f9fd 100%);
 	}
 </style>

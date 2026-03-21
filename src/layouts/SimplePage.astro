@@ -18,7 +18,7 @@ const { title, description } = Astro.props;
 	</head>
 	<body>
 		<Header />
-		<main class="simple-page">
+		<main class="simple-page page-content">
 			<slot />
 		</main>
 		<Footer />
@@ -26,7 +26,7 @@ const { title, description } = Astro.props;
 </html>
 
 <style>
-	.simple-page {
-		padding-top: 0.5rem;
+	.page-content {
+		padding-top: 0.35rem;
 	}
 </style>
