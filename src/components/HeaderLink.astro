@@ -1,16 +1,28 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { hrefAbout, hrefHome, isAboutPage } from '../utils/sitePaths';
+import { hrefAbout, hrefHome, hrefServices, isAboutPage, isServicesPage } from '../utils/sitePaths';
 
 type Props = Omit<HTMLAttributes<'a'>, 'href'> & {
-	variant: 'home' | 'about';
+	variant: 'home' | 'about' | 'services';
 };
 
 const { class: className, variant, ...props } = Astro.props;
 
 const pathname = Astro.url.pathname;
-const resolvedHref = variant === 'home' ? hrefHome(pathname) : hrefAbout(pathname);
-const isActive = variant === 'home' ? !isAboutPage(pathname) : isAboutPage(pathname);
+
+let resolvedHref: string;
+let isActive: boolean;
+
+if (variant === 'home') {
+	resolvedHref = hrefHome(pathname);
+	isActive = !isAboutPage(pathname) && !isServicesPage(pathname);
+} else if (variant === 'about') {
+	resolvedHref = hrefAbout(pathname);
+	isActive = isAboutPage(pathname);
+} else {
+	resolvedHref = hrefServices(pathname);
+	isActive = isServicesPage(pathname);
+}
 ---
 
 <a href={resolvedHref} class:list={[className, 'nav-link', { active: isActive }]} {...props}>

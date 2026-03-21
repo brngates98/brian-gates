@@ -1,0 +1,63 @@
+---
+import SimplePage from '../../layouts/SimplePage.astro';
+import { CONTACT, GITHUB_USERNAME } from '../../consts';
+---
+
+<SimplePage
+	title="Services — Brian Gates"
+	description="Contract consulting and development: infrastructure, networking, virtualization, and storage."
+>
+	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">Services</h1>
+	<p class="lead text-body-secondary">
+		I am <strong>open to contract engagements</strong> — from short advisory and project consulting through
+		architecture reviews, implementation planning, and hands-on development work. If you need someone who
+		can bridge operations, infrastructure, and code, let’s talk.
+	</p>
+	<p>
+		Engagements can be scoped as fixed projects, ongoing part-time support, or targeted deep-dives (for
+		example: observability design, automation, or storage integration). I am happy to align with your
+		tools, runbooks, and compliance requirements.
+	</p>
+
+	<h2 class="h4 fw-bold mt-5 mb-3">Areas I work in</h2>
+	<ul class="mb-4">
+		<li>
+			<strong>Networking</strong> — Enterprise and campus design and operations; <strong>Cisco</strong> routing
+			and switching; <strong>UniFi</strong> / Ubiquiti Wi‑Fi and site design; monitoring and troubleshooting.
+		</li>
+		<li>
+			<strong>Virtualization &amp; platforms</strong> — <strong>VMware</strong> vSphere environments;
+			<strong>Proxmox VE</strong> clusters, storage, and automation; integration with backup and monitoring
+			stacks.
+		</li>
+		<li>
+			<strong>Storage / SAN</strong> — Experience across <strong>multiple vendors</strong> (including enterprise
+			block storage, VMware and Proxmox integration, and capacity planning). Comfortable working with vendor
+			teams and internal stakeholders on migrations and performance.
+		</li>
+		<li>
+			<strong>Observability &amp; automation</strong> — Grafana, metrics and logging pipelines, Kubernetes and
+			Linux platforms, Python and Go for tooling (see featured projects on the home page).
+		</li>
+	</ul>
+
+	<p class="text-body-secondary mb-4">
+		For a fuller picture of roles, certifications, and endorsements, review my
+		<a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn profile</a>
+		— and my
+		<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">GitHub</a>
+		for public code and integrations.
+	</p>
+
+	<p class="mb-4">
+		<strong>Next step:</strong>
+		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+		— send a short note about your timeline, stack, and what you need. I will respond with availability and
+		whether we are a good fit.
+	</p>
+
+	<p class="mb-0 d-flex flex-wrap gap-2">
+		<a class="btn btn-outline-primary btn-sm" href="../">← Home</a>
+		<a class="btn btn-outline-secondary btn-sm" href="../about/">About</a>
+	</p>
+</SimplePage>

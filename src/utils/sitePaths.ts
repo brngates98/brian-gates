@@ -6,27 +6,40 @@
  * Avoid hardcoding /repo/ — the browser resolves relative to the current document URL.
  */
 
-/** True when the current page is the About section (not the home page). */
 export function isAboutPage(pathname: string): boolean {
   return pathname.includes("/about/") || pathname.endsWith("/about");
 }
 
-/** Home link: up one level from About, current dir on home. */
+export function isServicesPage(pathname: string): boolean {
+  return pathname.includes("/services/") || pathname.endsWith("/services");
+}
+
+/** About or Services (one level below site root). */
+export function inSiteSubpage(pathname: string): boolean {
+  return isAboutPage(pathname) || isServicesPage(pathname);
+}
+
 export function hrefHome(pathname: string): string {
-  return isAboutPage(pathname) ? "../" : "./";
+  return inSiteSubpage(pathname) ? "../" : "./";
 }
 
-/** About link: sibling folder from home, current dir when already on About. */
 export function hrefAbout(pathname: string): string {
-  return isAboutPage(pathname) ? "./" : "about/";
+  if (isAboutPage(pathname)) return "./";
+  if (isServicesPage(pathname)) return "../about/";
+  return "about/";
 }
 
-/** Static assets co-located with index.html at site root. */
+export function hrefServices(pathname: string): string {
+  if (isServicesPage(pathname)) return "./";
+  if (isAboutPage(pathname)) return "../services/";
+  return "services/";
+}
+
 export function hrefFavicon(pathname: string): string {
-  return isAboutPage(pathname) ? "../favicon.svg" : "favicon.svg";
+  return inSiteSubpage(pathname) ? "../favicon.svg" : "favicon.svg";
 }
 
 export function hrefFont(pathname: string, file: "atkinson-regular.woff" | "atkinson-bold.woff"): string {
-  const prefix = isAboutPage(pathname) ? "../" : "";
+  const prefix = inSiteSubpage(pathname) ? "../" : "";
   return `${prefix}fonts/${file}`;
 }
