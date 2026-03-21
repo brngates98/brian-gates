@@ -20,12 +20,24 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 const pathname = Astro.url.pathname;
 
+const publishedTime = post.data.pubDate.toISOString();
+const modifiedTime = post.data.updatedDate?.toISOString();
+
 function formatDate(d: Date): string {
 	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 ---
 
-<SimplePage title={`${post.data.title} — Blog`} description={post.data.description}>
+<SimplePage
+	title={`${post.data.title} — Blog`}
+	description={post.data.description}
+	seo={{
+		ogType: 'article',
+		headline: post.data.title,
+		publishedTime,
+		modifiedTime,
+	}}
+>
 	<article class="blog-post">
 		<p class="small text-body-secondary mb-2">
 			<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>

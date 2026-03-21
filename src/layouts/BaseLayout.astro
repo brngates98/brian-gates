@@ -2,19 +2,21 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import type { SeoOptions } from '../types/seo';
 
 interface Props {
 	title: string;
 	description: string;
+	seo?: SeoOptions;
 }
 
-const { title, description } = Astro.props;
+const { title, description, seo } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} seo={seo} />
 	</head>
 	<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 		<Header />

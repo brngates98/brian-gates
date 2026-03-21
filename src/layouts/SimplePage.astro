@@ -1,15 +1,17 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import type { SeoOptions } from '../types/seo';
 
 interface Props {
 	title: string;
 	description: string;
+	seo?: SeoOptions;
 }
 
-const { title, description } = Astro.props;
+const { title, description, seo } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} seo={seo}>
 	<div class="container py-4 py-md-5">
 		<div class="row justify-content-center">
 			<div class="col-lg-8">

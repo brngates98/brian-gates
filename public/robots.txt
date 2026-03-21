@@ -1,0 +1,5 @@
+# https://briangates.tech — allow indexing; sitemap lists all public URLs
+User-agent: *
+Allow: /
+
+Sitemap: https://briangates.tech/sitemap-index.xml

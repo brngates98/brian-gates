@@ -1,25 +1,91 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { hrefFavicon, hrefFont } from '../utils/sitePaths';
+import {
+	SITE_TITLE,
+	SITE_DESCRIPTION,
+	SITE_URL,
+	CONTACT,
+	GITHUB_USERNAME,
+} from '../consts';
+import type { SeoOptions } from '../types/seo';
 
 interface Props {
 	title: string;
 	description: string;
+	seo?: SeoOptions;
 }
 
 const pathname = Astro.url.pathname;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description, seo } = Astro.props;
 
-const { title, description } = Astro.props;
+const canonicalURL = new URL(pathname, Astro.site);
+const canonicalHref = canonicalURL.href;
+
+const siteOrigin = SITE_URL.replace(/\/$/, '');
+const defaultOgImage = `${siteOrigin}/favicon.svg`;
+const ogImageAbs = defaultOgImage;
+
 const iconHref = hrefFavicon(pathname);
-
 const fontRegular = hrefFont(pathname, 'atkinson-regular.woff');
 const fontBold = hrefFont(pathname, 'atkinson-bold.woff');
 const fontFaceInline = `<style>@font-face{font-family:Atkinson;src:url('${fontRegular}')format('woff');font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url('${fontBold}')format('woff');font-weight:700;font-style:normal;font-display:swap}</style>`;
 
-const ogImageAbs = new URL(hrefFavicon(pathname), Astro.url).href;
+const ogType = seo?.ogType ?? 'website';
+const robotsContent = seo?.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+const sameAs: string[] = [`https://github.com/${GITHUB_USERNAME}`];
+if (CONTACT.linkedin) sameAs.push(CONTACT.linkedin);
+
+const personId = `${siteOrigin}/#person`;
+const websiteId = `${siteOrigin}/#website`;
+
+type JsonLdThing = Record<string, unknown>;
+
+const jsonLdGraph: JsonLdThing[] = [
+	{
+		'@type': 'WebSite',
+		'@id': websiteId,
+		url: `${siteOrigin}/`,
+		name: SITE_TITLE,
+		description: SITE_DESCRIPTION,
+		inLanguage: 'en-US',
+		publisher: { '@id': personId },
+	},
+	{
+		'@type': 'Person',
+		'@id': personId,
+		name: SITE_TITLE,
+		url: `${siteOrigin}/`,
+		email: CONTACT.email,
+		jobTitle: 'Systems engineer and developer',
+		sameAs,
+	},
+];
+
+if (ogType === 'article' && seo?.publishedTime) {
+	const headline = seo.headline ?? title;
+	const modified = seo.modifiedTime ?? seo.publishedTime;
+	jsonLdGraph.push({
+		'@type': 'BlogPosting',
+		headline,
+		description,
+		datePublished: seo.publishedTime,
+		dateModified: modified,
+		author: { '@type': 'Person', '@id': personId },
+		publisher: { '@type': 'Person', '@id': personId },
+		mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalHref },
+		url: canonicalHref,
+		image: defaultOgImage,
+	});
+}
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': jsonLdGraph,
+};
+
+const jsonLdRaw = JSON.stringify(structuredData);
 ---
 
 <!-- Global Metadata -->
@@ -28,6 +94,10 @@ const ogImageAbs = new URL(hrefFavicon(pathname), Astro.url).href;
 <meta name="theme-color" content="#212529" />
 <link rel="icon" type="image/svg+xml" href={iconHref} />
 <meta name="generator" content={Astro.generator} />
+
+<meta name="robots" content={robotsContent} />
+<meta name="googlebot" content={robotsContent} />
+<meta name="author" content={SITE_TITLE} />
 
 <!-- Bootstrap 5 -->
 <link
@@ -43,23 +113,45 @@ const ogImageAbs = new URL(hrefFavicon(pathname), Astro.url).href;
 <Fragment set:html={fontFaceInline} />
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+<link rel="canonical" href={canonicalHref} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalHref} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageAbs} />
+<meta property="og:image:alt" content={`${SITE_TITLE} — site icon`} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content="en_US" />
+{
+	seo?.publishedTime && (
+		<>
+			<meta property="article:published_time" content={seo.publishedTime} />
+			<meta property="article:author" content={SITE_TITLE} />
+		</>
+	)
+}
+{
+	ogType === 'article' && seo?.publishedTime && (
+		<meta
+			property="article:modified_time"
+			content={seo.modifiedTime ?? seo.publishedTime}
+		/>
+	)
+}
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImageAbs} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalHref} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageAbs} />
+
+<!-- Structured data (WebSite, Person, BlogPosting on articles) -->
+<script type="application/ld+json" set:html={jsonLdRaw} />
