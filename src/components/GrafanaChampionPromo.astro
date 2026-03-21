@@ -24,39 +24,9 @@ import { GRAFANA } from '../consts';
 						/>
 					</a>
 					<figcaption class="small text-body-secondary mt-2 mb-0 px-1">
-						Official Grafana Champion artwork — same asset as on{' '}
-						<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">grafana.com</a>
+						Grafana Champion program artwork from{' '}
+						<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana Labs</a>
 					</figcaption>
-					<!-- Tiny friendly bot — original doodle, not Grafana IP -->
-					<div class="grafana-promo__buddy mt-3" aria-hidden="true">
-						<svg
-							class="grafana-promo__bot"
-							viewBox="0 0 96 88"
-							xmlns="http://www.w3.org/2000/svg"
-							focusable="false"
-						>
-							<ellipse cx="48" cy="58" rx="34" ry="28" fill="#2a2a2a" />
-							<circle cx="38" cy="48" r="6" fill="#f46800" />
-							<circle cx="58" cy="48" r="6" fill="#f46800" />
-							<path
-								d="M40 38 Q48 34 56 38"
-								stroke="#f46800"
-								stroke-width="2"
-								fill="none"
-								stroke-linecap="round"
-							/>
-							<line x1="48" y1="42" x2="48" y2="24" stroke="#f46800" stroke-width="3" stroke-linecap="round" />
-							<circle cx="48" cy="20" r="5" fill="#f46800" />
-							<path
-								d="M34 62 L42 56 L48 60 L54 52 L62 58"
-								stroke="#f46800"
-								stroke-width="2"
-								fill="none"
-								stroke-linecap="round"
-							/>
-						</svg>
-						<span class="grafana-promo__buddy-label">your metrics pal</span>
-					</div>
 				</figure>
 			</div>
 			<div class="col">
@@ -92,7 +62,7 @@ import { GRAFANA } from '../consts';
 		border: 1px solid rgba(0, 0, 0, 0.06) !important;
 	}
 	.grafana-promo__figure {
-		max-width: 14rem;
+		max-width: min(100%, 16rem);
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -108,29 +78,11 @@ import { GRAFANA } from '../consts';
 	.grafana-promo__logo {
 		display: block;
 		margin: 0 auto;
-		max-height: 10rem;
+		max-height: 14rem;
 		width: auto;
 		height: auto;
 		object-fit: contain;
 		filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
-	}
-	.grafana-promo__buddy {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.25rem;
-		opacity: 0.92;
-	}
-	.grafana-promo__bot {
-		width: 3.25rem;
-		height: auto;
-		display: block;
-	}
-	.grafana-promo__buddy-label {
-		font-size: 0.7rem;
-		color: var(--bs-secondary-color);
-		font-style: italic;
-		letter-spacing: 0.02em;
 	}
 	.ls-wide {
 		letter-spacing: 0.12em;
