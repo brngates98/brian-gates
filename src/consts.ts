@@ -1,7 +1,7 @@
 // Site & contact — edit to match your profiles.
 export const SITE_TITLE = "Brian Gates";
 export const SITE_DESCRIPTION =
-  "Systems engineer and developer — portfolio and contact.";
+  "Systems engineer and developer. Infrastructure, observability, and open source work.";
 
 export const SITE_URL = "https://briangates.tech";
 
@@ -25,29 +25,26 @@ export type FeaturedProject = {
   tags?: string[];
 };
 
-/**
- * Curated from your public GitHub (stars, recency, and fit for a portfolio).
- * Edit anytime — see https://github.com/brngates98?tab=repositories
- */
+/** Featured work — shown on the home page. */
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
     name: "Intune2snipe",
     description:
-      "Microsoft Intune → Snipe-IT: sync inventory and asset data through the Snipe-IT API.",
+      "Keeps Snipe-IT asset records in sync with Microsoft Intune — device inventory stays accurate without manual spreadsheets.",
     url: `https://github.com/${GITHUB_USERNAME}/Intune2snipe`,
     tags: ["Intune", "Snipe-IT", "Python"],
   },
   {
     name: "pve-nimble-plugin",
     description:
-      "Proxmox VE storage plugin for HPE Nimble / Nimble SAN volumes as VM and container storage.",
+      "Proxmox VE storage integration for HPE Nimble SANs — use Nimble volumes for virtual machines and containers.",
     url: `https://github.com/${GITHUB_USERNAME}/pve-nimble-plugin`,
     tags: ["Proxmox", "Nimble", "Perl"],
   },
   {
     name: "GrafanaAgents",
     description:
-      "Shared Grafana Agent (and related) configs for metrics, logs, and observability pipelines.",
+      "Shared Grafana Agent-style configs for metrics, logs, and pipelines — practical examples for observability setups.",
     url: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
     tags: ["Grafana", "Go", "Observability"],
   },
