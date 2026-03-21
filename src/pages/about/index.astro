@@ -8,12 +8,17 @@ const pathname = Astro.url.pathname;
 
 <SimplePage
 	title="About — Brian Gates"
-	description="Background, how I work, and how to reach me."
+	description="Engineer, open source, infrastructure — and classic Audis with standalone ECUs."
 >
 	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">About</h1>
 	<p class="lead text-body-secondary">
-		I am a systems engineer and developer focused on infrastructure that stays reliable, observable,
-		and automated. I have been recognized as a{' '}
+		I am an engineer who likes to code, learn new technologies, and pick up new skills as I go. I
+		believe in open source and in the idea that almost anything is achievable if you are willing to
+		dig in, share what you learn, and keep iterating.
+	</p>
+	<p>
+		Day to day I am a systems engineer and developer focused on infrastructure that stays reliable,
+		observable, and automated. I have been recognized as a{' '}
 		<a href={GRAFANA.champions} target="_blank" rel="noopener noreferrer">Grafana Champion</a>
 		{' '}and enjoy turning messy operational data into{' '}
 		<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a>
@@ -24,8 +29,10 @@ const pathname = Astro.url.pathname;
 		that hold up under load, with clear runbooks, measurable goals, and less repetitive toil.
 	</p>
 	<p>
-		Outside of work you will often find me under the hood of a classic car or tweaking how something
-		looks in <a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a>.
+		Outside of work I love classic Audis, playing with standalone ECUs, and the kind of tuning where
+		small changes add up to something that feels right — not unlike refining a{' '}
+		<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a> view until it tells
+		the story you need.
 	</p>
 	<p class="mb-4">
 		<a class="link-dark fw-semibold" href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
