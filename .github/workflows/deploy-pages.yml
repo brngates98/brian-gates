@@ -31,6 +31,14 @@ jobs:
       - run: npm run build
         env:
           PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.WEB3FORMS_ACCESS_KEY }}
+          # Optional: Grafana Cloud Frontend Observability source map uploads
+          # https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/configure/sourcemap-uploads/
+          FARO_API_KEY: ${{ secrets.FARO_API_KEY }}
+          FARO_SOURCEMAP_ENDPOINT: ${{ secrets.FARO_SOURCEMAP_ENDPOINT }}
+          FARO_APP_ID: ${{ secrets.FARO_APP_ID }}
+          FARO_STACK_ID: ${{ secrets.FARO_STACK_ID }}
+          PUBLIC_FARO_APP_ID: ${{ secrets.FARO_APP_ID }}
+          PUBLIC_FARO_APP_VERSION: ${{ github.sha }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

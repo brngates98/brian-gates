@@ -6,6 +6,9 @@
 import { CONTACT, GITHUB_USERNAME } from '../consts';
 
 const today = new Date();
+/** Matches Faro `appId` in Grafana → Settings → Source maps (required for uploaded maps to apply). */
+const faroAppId = import.meta.env.PUBLIC_FARO_APP_ID ?? '';
+const faroAppVersion = import.meta.env.PUBLIC_FARO_APP_VERSION ?? '1.0.0';
 ---
 
 <footer class="footer-portfolio mt-auto border-top bg-body-tertiary">
@@ -29,27 +32,33 @@ const today = new Date();
 	</div>
 </footer>
 
-<!-- Grafana Faro RUM (Web SDK + tracing) — https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/ -->
-<script is:inline>
+<!-- Grafana Faro RUM — matches Web SDK quickstart + optional app.id/version from build (source maps). -->
+<script is:inline define:vars={{ faroAppId, faroAppVersion }}>
 	(function () {
 		var webSdkScript = document.createElement('script');
+		// Fetch the latest 2.x.x Web SDK from the CDN (see Grafana Frontend Observability quickstart).
 		webSdkScript.src =
 			'https://unpkg.com/@grafana/faro-web-sdk@2/dist/bundle/faro-web-sdk.iife.js';
 
 		webSdkScript.onload = function () {
+			var app = {
+				name: 'briangates.tech',
+				version: faroAppVersion,
+				environment: 'production',
+			};
+			if (faroAppId) {
+				app.id = faroAppId;
+			}
 			window.GrafanaFaroWebSdk.initializeFaro({
 				url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/d7755bacae27e72368c37cf1a31a302c',
-				app: {
-					name: 'briangates.tech',
-					version: '1.0.0',
-					environment: 'production',
-				},
+				app: app,
 				sessionTracking: {
 					samplingRate: 1,
 					persistent: true,
 				},
 			});
 
+			// Load tracing after the Web SDK has initialized (required order per Grafana docs).
 			var webTracingScript = document.createElement('script');
 			webTracingScript.src =
 				'https://unpkg.com/@grafana/faro-web-tracing@2/dist/bundle/faro-web-tracing.iife.js';
