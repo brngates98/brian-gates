@@ -1,62 +1,39 @@
-# Astro Starter Kit: Blog
+# Brian Gates — personal site
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/astro-blog-starter-template)
+Static portfolio built with [Astro](https://astro.build): home with featured GitHub projects, a short About page, and contact details. Built output is plain HTML/CSS in `dist/`, suitable for [GitHub Pages](https://docs.github.com/en/pages).
 
-![Astro Template Preview](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-<!-- dash-content-start -->
-
-Create a blog with Astro and deploy it on Cloudflare Workers as a [static website](https://developers.cloudflare.com/workers/static-assets/).
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-<!-- dash-content-end -->
-
-## Getting Started
-
-Outside of this repo, you can start a new project with this template using [C3](https://developers.cloudflare.com/pages/get-started/c3/) (the `create-cloudflare` CLI):
+## Local development
 
 ```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/astro-blog-starter-template
+npm install
+npm run dev
 ```
 
-A live public deployment of this template is available at [https://astro-blog-starter-template.templates.workers.dev](https://astro-blog-starter-template.templates.workers.dev)
+Open `http://localhost:4321`. Production build:
 
-## 🚀 Project Structure
+```bash
+npm run build
+npm run preview
+```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## GitHub Pages
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Push this repo to GitHub (default branch `main`).
+2. **Settings → Pages → Build and deployment**: set **Source** to **GitHub Actions** (not “Deploy from a branch”).
+3. The workflow `.github/workflows/deploy-pages.yml` builds on every push to `main` and publishes `dist/`.
+4. After the first successful run, **Settings → Pages** can show your Pages URL; with a custom domain it will serve `https://briangates.tech` once DNS is correct.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Custom domain (briangates.tech on Cloudflare)
 
-Any static assets, like images, can be placed in the `public/` directory.
+- In the repo: `public/CNAME` contains `briangates.tech` so GitHub Pages keeps the domain after each deploy.
+- In **GitHub**: **Settings → Pages → Custom domain** → add `briangates.tech`, enable **Enforce HTTPS** after DNS is verified.
+- In **Cloudflare DNS** for `briangates.tech`:
+  - **A** `@` → `185.199.108.151` (and often the same for `185.199.109.151`, `185.199.110.151`, `185.199.111.151` — GitHub Pages uses these; one A record is enough for simple setups, or use all four for redundancy).
+  - **CNAME** `www` → `briangates.github.io` (or your `username.github.io` org/user site hostname if different).
+- In Cloudflare, set the site to **DNS only** (grey cloud) for the apex if GitHub’s docs require it for verification; many setups work with proxy on — follow [GitHub’s custom domain docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site) if something fails.
 
-## 🧞 Commands
+Edit site copy, `GITHUB_USERNAME`, `FEATURED_PROJECTS`, and `CONTACT` in `src/consts.ts`. Canonical URL and sitemap use `https://briangates.tech` from `astro.config.mjs`.
 
-All commands are run from the root of the project, from a terminal:
+## Credits
 
-| Command                           | Action                                           |
-| :-------------------------------- | :----------------------------------------------- |
-| `npm install`                     | Installs dependencies                            |
-| `npm run dev`                     | Starts local dev server at `localhost:4321`      |
-| `npm run build`                   | Build your production site to `./dist/`          |
-| `npm run preview`                 | Preview your build locally, before deploying     |
-| `npm run astro ...`               | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help`         | Get help using the Astro CLI                     |
-| `npm run build && npm run deploy` | Deploy your production site to Cloudflare        |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Layout and typography are inspired by [Bear Blog](https://github.com/HermanMartinus/bearblog/).

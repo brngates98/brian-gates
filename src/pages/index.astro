@@ -2,77 +2,201 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import {
+	SITE_TITLE,
+	SITE_DESCRIPTION,
+	FEATURED_PROJECTS,
+	CONTACT,
+	GITHUB_USERNAME,
+} from '../consts';
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      {/* Hero Section */}
-      <section style="padding: 2rem 0; text-align: center;">
-        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Hi, I'm Brian Gates</h1>
-        <p style="font-size: 1.25rem; color: #666;">Systems Engineer, Developer, & Grafana Champion</p>
-        <p style="margin-top: 1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-          I'm a systems engineer and developer with a passion for building reliable, scalable, and automated solutions. As a Grafana Champion and classic car enthusiast, I love blending technology and creativity—whether it's working with Kubernetes, Python, Go, or automating complex workflows. When I'm not coding or architecting systems, you'll find me under the hood of a classic car or exploring new ways to visualize data.
-        </p>
-      </section>
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<h1>Brian Gates</h1>
+				<p class="hero-tagline">Systems engineer, developer, Grafana Champion</p>
+				<p class="hero-lede">
+					I build reliable, observable systems — Kubernetes, automation, Python, Go — and care
+					about clear metrics and calm operations. Outside of work I tinker with classic cars
+					and data visualization.
+				</p>
+				<p class="hero-cta">
+					<a class="button" href="/about/">About</a>
+					<a class="button button-secondary" href="#contact">Contact</a>
+				</p>
+			</section>
 
-      {/* Skills Section */}
-      <section style="padding: 2rem 0;">
-        <h2>Skills</h2>
-        <ul style="display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; padding: 0;">
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Kubernetes</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Python</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Go (Golang)</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Automation</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Grafana</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Systems Engineering</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Linux</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Cloud Infrastructure</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">Monitoring & Observability</li>
-          <li style="background: #f3f3f3; padding: 0.5rem 1rem; border-radius: 5px;">CI/CD</li>
-        </ul>
-      </section>
+			<section class="section" aria-labelledby="projects-heading">
+				<h2 id="projects-heading">Featured projects</h2>
+				<p class="section-intro">
+					A few GitHub repos I like to highlight. Edit the list in{' '}
+					<code>src/consts.ts</code>.
+				</p>
+				<ul class="project-grid">
+					{
+						FEATURED_PROJECTS.map((p) => (
+							<li class="project-card">
+								<h3>{p.name}</h3>
+								<p>{p.description}</p>
+								{p.tags && p.tags.length > 0 && (
+									<ul class="project-tags">
+										{p.tags.map((t) => (
+											<li>{t}</li>
+										))}
+									</ul>
+								)}
+								<a href={p.url} class="project-link" target="_blank" rel="noopener noreferrer">
+									View on GitHub
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 
-      {/* Projects Section */}
-      <section style="padding: 2rem 0;">
-        <h2>Projects</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
-          <div style="flex: 1 1 250px; background: #fafafa; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px #0001;">
-            <h3>Project One</h3>
-            <p>A brief description of your project. What does it do? What tech did you use?</p>
-            <a href="#" style="color: #0070f3;">View Project</a>
-          </div>
-          <div style="flex: 1 1 250px; background: #fafafa; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px #0001;">
-            <h3>Project Two</h3>
-            <p>A brief description of your project. What does it do? What tech did you use?</p>
-            <a href="#" style="color: #0070f3;">View Project</a>
-          </div>
-          <div style="flex: 1 1 250px; background: #fafafa; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px #0001;">
-            <h3>Project Three</h3>
-            <p>A brief description of your project. What does it do? What tech did you use?</p>
-            <a href="#" style="color: #0070f3;">View Project</a>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section style="padding: 2rem 0; text-align: center;">
-        <h2>Contact</h2>
-        <p>Interested in working together or have a question? Reach out!</p>
-        <a href="mailto:brian@briangates.tech" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #0070f3; color: #fff; border-radius: 5px; text-decoration: none;">Email Me</a>
-        <div style="margin-top: 2rem;">
-          <a href="#" style="margin: 0 1rem; color: #0070f3; text-decoration: underline;">Resume (coming soon)</a>
-          <a href="#" style="margin: 0 1rem; color: #0070f3; text-decoration: underline;">Projects (coming soon)</a>
-          <a href="#" style="margin: 0 1rem; color: #0070f3; text-decoration: underline;">LinkedIn (coming soon)</a>
-        </div>
-      </section>
-    </main>
-    <Footer />
-  </body>
+			<section class="section section-contact" id="contact" aria-labelledby="contact-heading">
+				<h2 id="contact-heading">Contact</h2>
+				<p>
+					<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+				</p>
+				<p>
+					<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
+						github.com/{GITHUB_USERNAME}
+					</a>
+				</p>
+				{
+					CONTACT.linkedin && (
+						<p>
+							<a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">
+								LinkedIn
+							</a>
+						</p>
+					)
+				}
+			</section>
+		</main>
+		<Footer />
+	</body>
 </html>
+
+<style>
+	.hero {
+		padding: 2rem 0 2.5rem;
+		text-align: center;
+	}
+	.hero h1 {
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		margin-bottom: 0.35rem;
+	}
+	.hero-tagline {
+		font-size: 1.15rem;
+		color: rgb(var(--gray));
+		margin: 0 0 1.25rem;
+	}
+	.hero-lede {
+		max-width: 38rem;
+		margin: 0 auto 1.5rem;
+		text-align: left;
+	}
+	.hero-cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		justify-content: center;
+		margin: 0;
+	}
+	.button {
+		display: inline-block;
+		padding: 0.55rem 1.25rem;
+		background: var(--accent);
+		color: #fff !important;
+		border-radius: 6px;
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+	.button:hover {
+		background: var(--accent-dark);
+		color: #fff !important;
+	}
+	.button-secondary {
+		background: transparent;
+		color: var(--accent) !important;
+		border: 2px solid var(--accent);
+	}
+	.button-secondary:hover {
+		background: rgba(var(--black), 4%);
+		color: var(--accent-dark) !important;
+		border-color: var(--accent-dark);
+	}
+	.section {
+		padding: 2rem 0;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.section-intro {
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+		margin-top: -0.25rem;
+		margin-bottom: 1.5rem;
+	}
+	.section h2 {
+		font-size: 1.65rem;
+		margin-bottom: 0.75rem;
+	}
+	.project-grid {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1.25rem;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	}
+	.project-card {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 10px;
+		padding: 1.15rem 1.25rem;
+		box-shadow: var(--box-shadow);
+	}
+	.project-card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+	.project-card > p {
+		margin: 0 0 0.85rem;
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+	.project-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		list-style: none;
+		padding: 0;
+		margin: 0 0 0.85rem;
+	}
+	.project-tags li {
+		font-size: 0.8rem;
+		padding: 0.2rem 0.5rem;
+		background: rgb(var(--gray-light));
+		border-radius: 4px;
+		color: rgb(var(--gray-dark));
+	}
+	.project-link {
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+	.section-contact {
+		text-align: center;
+		padding-bottom: 3rem;
+	}
+	.section-contact p {
+		margin: 0.35rem 0;
+	}
+</style>
