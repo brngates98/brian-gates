@@ -1,14 +1,14 @@
 ---
-import SimplePage from '../layouts/SimplePage.astro';
-import { CONTACT, GITHUB_USERNAME } from '../consts';
+import SimplePage from '../../layouts/SimplePage.astro';
+import { CONTACT, GITHUB_USERNAME } from '../../consts';
 ---
 
 <SimplePage
 	title="About — Brian Gates"
 	description="Background, how I work, and how to reach me."
 >
-	<h1>About</h1>
-	<p>
+	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">About</h1>
+	<p class="lead text-body-secondary">
 		I am a systems engineer and developer focused on infrastructure that stays reliable, observable,
 		and automated. I have been recognized as a Grafana Champion and enjoy turning messy operational
 		data into dashboards teams actually use.
@@ -21,16 +21,16 @@ import { CONTACT, GITHUB_USERNAME } from '../consts';
 		Outside of work you will often find me under the hood of a classic car or tweaking how something
 		looks in Grafana.
 	</p>
-	<p>
-		<a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
+	<p class="mb-4">
+		<a class="link-dark fw-semibold" href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
 			GitHub ({`@${GITHUB_USERNAME}`})
 		</a>
-		{' '}
-		·{' '}
-		<a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-		{' '}
-		·{' '}
-		<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+		<span class="text-secondary mx-2">·</span>
+		<a class="link-dark fw-semibold" href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		<span class="text-secondary mx-2">·</span>
+		<a class="link-dark fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 	</p>
-	<p><a href="/">← Home</a></p>
+	<p class="mb-0">
+		<a class="btn btn-outline-primary btn-sm" href="/">← Home</a>
+	</p>
 </SimplePage>

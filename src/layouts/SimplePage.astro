@@ -16,17 +16,17 @@ const { title, description } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 	</head>
-	<body>
+	<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 		<Header />
-		<main class="simple-page page-content">
-			<slot />
+		<main class="flex-grow-1">
+			<div class="container py-4 py-md-5">
+				<div class="row justify-content-center">
+					<div class="col-lg-8">
+						<slot />
+					</div>
+				</div>
+			</div>
 		</main>
 		<Footer />
 	</body>
 </html>
-
-<style>
-	.page-content {
-		padding-top: 0.35rem;
-	}
-</style>
