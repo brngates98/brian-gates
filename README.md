@@ -23,7 +23,7 @@ npm run preview
 3. The workflow `.github/workflows/deploy-pages.yml` builds on every push to `main` and publishes `dist/`.
 4. After the first successful run, **Settings → Pages** can show your Pages URL; with a custom domain it will serve `https://briangates.tech` once DNS is correct.
 
-This repo is a **project site** (not `username.github.io`), so GitHub serves it at **`https://brngates98.github.io/brian-gates/`** — not at `https://brngates98.github.io/`. Astro uses `base: '/brian-gates/'` so links like About resolve to **`…/brian-gates/about/`** instead of **`…/about/`** (which 404s). Prefer your **custom domain** `https://briangates.tech` for sharing when it is configured.
+This repo is a **project site** (not `username.github.io`), so GitHub also serves it at **`https://brngates98.github.io/brian-gates/`**. Internal links use **relative URLs** (`about/`, `../`, `./`) so the **same build** works at that URL **and** at your **custom domain** `https://briangates.tech/` — no `base` path to change when you add DNS.
 
 ## Custom domain (briangates.tech on Cloudflare)
 

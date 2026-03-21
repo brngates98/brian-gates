@@ -2,23 +2,24 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { sitePath } from '../utils/sitePath';
+import { hrefFavicon, hrefFont } from '../utils/sitePaths';
 
 interface Props {
 	title: string;
 	description: string;
-	image?: string;
 }
 
+const pathname = Astro.url.pathname;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/favicon.svg' } = Astro.props;
-const iconHref = sitePath(image.startsWith('/') ? image : `/${image}`);
-const imgPath = sitePath(image.startsWith('/') ? image : `/${image}`);
-const ogImageUrl = new URL(imgPath, Astro.site).href;
-const fontRegular = sitePath('/fonts/atkinson-regular.woff');
-const fontBold = sitePath('/fonts/atkinson-bold.woff');
+const { title, description } = Astro.props;
+const iconHref = hrefFavicon(pathname);
+
+const fontRegular = hrefFont(pathname, 'atkinson-regular.woff');
+const fontBold = hrefFont(pathname, 'atkinson-bold.woff');
 const fontFaceInline = `<style>@font-face{font-family:Atkinson;src:url('${fontRegular}')format('woff');font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url('${fontBold}')format('woff');font-weight:700;font-style:normal;font-display:swap}</style>`;
+
+const ogImageAbs = new URL(hrefFavicon(pathname), Astro.url).href;
 ---
 
 <!-- Global Metadata -->
@@ -36,7 +37,7 @@ const fontFaceInline = `<style>@font-face{font-family:Atkinson;src:url('${fontRe
 	crossorigin="anonymous"
 />
 
-<!-- Font preloads + @font-face (paths respect GitHub Pages project base) -->
+<!-- Font preloads + @font-face (relative to current page URL) -->
 <link rel="preload" href={fontRegular} as="font" type="font/woff" crossorigin />
 <link rel="preload" href={fontBold} as="font" type="font/woff" crossorigin />
 <Fragment set:html={fontFaceInline} />
@@ -54,11 +55,11 @@ const fontFaceInline = `<style>@font-face{font-family:Atkinson;src:url('${fontRe
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image" content={ogImageAbs} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImageUrl} />
+<meta property="twitter:image" content={ogImageAbs} />

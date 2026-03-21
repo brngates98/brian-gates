@@ -2,12 +2,11 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// Static site for GitHub Pages — see .github/workflows/deploy-pages.yml
-// Project site URL: https://<user>.github.io/<repo>/ — base must match repo name.
-// Custom domain briangates.tech maps to the same deployment (paths work at domain root).
+// No `base` — internal links use relative URLs so the same build works for:
+// - GitHub Pages project site: https://<user>.github.io/<repo>/
+// - Custom domain https://briangates.tech/ (same artifact; paths resolve per host)
 export default defineConfig({
   site: "https://briangates.tech",
-  base: "/brian-gates/",
   trailingSlash: "always",
   integrations: [sitemap()],
 });
