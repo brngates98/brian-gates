@@ -8,9 +8,10 @@ import {
 	CONTACT,
 	GITHUB_USERNAME,
 } from '../consts';
-import { hrefContact } from '../utils/sitePaths';
+import { hrefBlog, hrefContact } from '../utils/sitePaths';
 
 const contactPageHref = hrefContact(Astro.url.pathname);
+const blogHref = hrefBlog(Astro.url.pathname);
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -31,6 +32,7 @@ const contactPageHref = hrefContact(Astro.url.pathname);
 					<div class="d-flex flex-wrap gap-2 justify-content-center">
 						<a class="btn btn-primary px-4" href="about/">About</a>
 						<a class="btn btn-outline-primary px-4" href="services/">Services</a>
+						<a class="btn btn-outline-primary px-4" href={blogHref}>Blog</a>
 						<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
 						<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
 					</div>

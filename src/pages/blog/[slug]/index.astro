@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import SimplePage from '../../../layouts/SimplePage.astro';
+import { hrefAbout, hrefBlog, hrefContact, hrefHome, hrefServices } from '../../../utils/sitePaths';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const pathname = Astro.url.pathname;
+
+function formatDate(d: Date): string {
+	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<SimplePage title={`${post.data.title} — Blog`} description={post.data.description}>
+	<article class="blog-post">
+		<p class="small text-body-secondary mb-2">
+			<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+		</p>
+		<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">{post.data.title}</h1>
+		<div class="blog-post__body text-body-secondary">
+			<Content />
+		</div>
+	</article>
+	<p class="mt-5 mb-0 d-flex flex-wrap gap-2">
+		<a class="btn btn-outline-primary btn-sm" href={hrefBlog(pathname)}>← All posts</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefHome(pathname)}>Home</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefServices(pathname)}>Services</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefContact(pathname)}>Contact</a>
+	</p>
+</SimplePage>
+
+<style is:global>
+	.blog-post__body > *:last-child {
+		margin-bottom: 0;
+	}
+	.blog-post__body h2 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
+		color: var(--bs-body-color);
+	}
+	.blog-post__body p {
+		margin-bottom: 1rem;
+	}
+	.blog-post__body a {
+		font-weight: 500;
+	}
+</style>

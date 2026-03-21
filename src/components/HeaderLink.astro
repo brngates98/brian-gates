@@ -2,16 +2,18 @@
 import type { HTMLAttributes } from 'astro/types';
 import {
 	hrefAbout,
+	hrefBlog,
 	hrefContact,
 	hrefHome,
 	hrefServices,
 	isAboutPage,
+	isBlogSection,
 	isContactPage,
 	isServicesPage,
 } from '../utils/sitePaths';
 
 type Props = Omit<HTMLAttributes<'a'>, 'href'> & {
-	variant: 'home' | 'about' | 'services' | 'contact';
+	variant: 'home' | 'about' | 'services' | 'blog' | 'contact';
 };
 
 const { class: className, variant, ...props } = Astro.props;
@@ -23,13 +25,20 @@ let isActive: boolean;
 
 if (variant === 'home') {
 	resolvedHref = hrefHome(pathname);
-	isActive = !isAboutPage(pathname) && !isServicesPage(pathname) && !isContactPage(pathname);
+	isActive =
+		!isAboutPage(pathname) &&
+		!isServicesPage(pathname) &&
+		!isContactPage(pathname) &&
+		!isBlogSection(pathname);
 } else if (variant === 'about') {
 	resolvedHref = hrefAbout(pathname);
 	isActive = isAboutPage(pathname);
 } else if (variant === 'services') {
 	resolvedHref = hrefServices(pathname);
 	isActive = isServicesPage(pathname);
+} else if (variant === 'blog') {
+	resolvedHref = hrefBlog(pathname);
+	isActive = isBlogSection(pathname);
 } else {
 	resolvedHref = hrefContact(pathname);
 	isActive = isContactPage(pathname);

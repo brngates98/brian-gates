@@ -18,38 +18,69 @@ export function isContactPage(pathname: string): boolean {
   return pathname.includes("/contact/") || pathname.endsWith("/contact");
 }
 
-/** About, Services, or Contact (one level below site root). */
+/** e.g. /blog/welcome/ — two levels below site root for static assets. */
+export function isBlogPostPage(pathname: string): boolean {
+  return /\/blog\/[^/]+\//.test(pathname);
+}
+
+export function isBlogSection(pathname: string): boolean {
+  return pathname.includes("/blog/");
+}
+
+/** /blog/ listing only (not a post). */
+export function isBlogIndexPage(pathname: string): boolean {
+  return isBlogSection(pathname) && !isBlogPostPage(pathname);
+}
+
+/** One level below site root: about, services, contact, blog index. */
 export function inSiteSubpage(pathname: string): boolean {
-  return isAboutPage(pathname) || isServicesPage(pathname) || isContactPage(pathname);
+  return (
+    isAboutPage(pathname) ||
+    isServicesPage(pathname) ||
+    isContactPage(pathname) ||
+    isBlogIndexPage(pathname)
+  );
 }
 
 export function hrefHome(pathname: string): string {
+  if (isBlogPostPage(pathname)) return "../../";
   return inSiteSubpage(pathname) ? "../" : "./";
 }
 
 export function hrefAbout(pathname: string): string {
   if (isAboutPage(pathname)) return "./";
-  if (isServicesPage(pathname) || isContactPage(pathname)) return "../about/";
+  if (isBlogPostPage(pathname)) return "../../about/";
+  if (inSiteSubpage(pathname)) return "../about/";
   return "about/";
 }
 
 export function hrefServices(pathname: string): string {
   if (isServicesPage(pathname)) return "./";
-  if (isAboutPage(pathname) || isContactPage(pathname)) return "../services/";
+  if (isBlogPostPage(pathname)) return "../../services/";
+  if (inSiteSubpage(pathname)) return "../services/";
   return "services/";
+}
+
+export function hrefBlog(pathname: string): string {
+  if (isBlogIndexPage(pathname)) return "./";
+  if (isBlogPostPage(pathname)) return "../";
+  if (inSiteSubpage(pathname)) return "../blog/";
+  return "blog/";
 }
 
 export function hrefContact(pathname: string): string {
   if (isContactPage(pathname)) return "./";
-  if (isAboutPage(pathname) || isServicesPage(pathname)) return "../contact/";
+  if (isBlogPostPage(pathname)) return "../../contact/";
+  if (inSiteSubpage(pathname)) return "../contact/";
   return "contact/";
 }
 
 export function hrefFavicon(pathname: string): string {
+  if (isBlogPostPage(pathname)) return "../../favicon.svg";
   return inSiteSubpage(pathname) ? "../favicon.svg" : "favicon.svg";
 }
 
 export function hrefFont(pathname: string, file: "atkinson-regular.woff" | "atkinson-bold.woff"): string {
-  const prefix = inSiteSubpage(pathname) ? "../" : "";
+  const prefix = isBlogPostPage(pathname) ? "../../" : inSiteSubpage(pathname) ? "../" : "";
   return `${prefix}fonts/${file}`;
 }

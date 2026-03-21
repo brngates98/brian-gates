@@ -1,7 +1,7 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
 import { CONTACT, GITHUB_USERNAME } from '../../consts';
-import { hrefAbout, hrefContact, hrefHome } from '../../utils/sitePaths';
+import { hrefAbout, hrefBlog, hrefContact, hrefHome } from '../../utils/sitePaths';
 
 const pathname = Astro.url.pathname;
 ---
@@ -65,6 +65,7 @@ const pathname = Astro.url.pathname;
 	<p class="mb-0 d-flex flex-wrap gap-2">
 		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefBlog(pathname)}>Blog</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefContact(pathname)}>Contact</a>
 	</p>
 </SimplePage>

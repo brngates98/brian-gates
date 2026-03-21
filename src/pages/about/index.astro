@@ -1,6 +1,9 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
 import { CONTACT, GITHUB_USERNAME, GRAFANA } from '../../consts';
+import { hrefBlog, hrefContact, hrefHome, hrefServices } from '../../utils/sitePaths';
+
+const pathname = Astro.url.pathname;
 ---
 
 <SimplePage
@@ -33,7 +36,10 @@ import { CONTACT, GITHUB_USERNAME, GRAFANA } from '../../consts';
 		<span class="text-secondary mx-2">·</span>
 		<a class="link-dark fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 	</p>
-	<p class="mb-0">
-		<a class="btn btn-outline-primary btn-sm" href="../">← Home</a>
+	<p class="mb-0 d-flex flex-wrap gap-2">
+		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefBlog(pathname)}>Blog</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefServices(pathname)}>Services</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefContact(pathname)}>Contact</a>
 	</p>
 </SimplePage>

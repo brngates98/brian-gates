@@ -2,7 +2,7 @@
 import SimplePage from '../../layouts/SimplePage.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import { CONTACT } from '../../consts';
-import { hrefAbout, hrefHome, hrefServices } from '../../utils/sitePaths';
+import { hrefAbout, hrefBlog, hrefHome, hrefServices } from '../../utils/sitePaths';
 
 const pathname = Astro.url.pathname;
 const thanks = Astro.url.searchParams.has('thanks');
@@ -39,5 +39,6 @@ const thanks = Astro.url.searchParams.has('thanks');
 		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefServices(pathname)}>Services</a>
+		<a class="btn btn-outline-secondary btn-sm" href={hrefBlog(pathname)}>Blog</a>
 	</p>
 </SimplePage>
