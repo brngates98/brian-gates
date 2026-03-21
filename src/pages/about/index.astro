@@ -1,6 +1,6 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
-import { CONTACT, GITHUB_USERNAME } from '../../consts';
+import { CONTACT, GITHUB_USERNAME, GRAFANA } from '../../consts';
 ---
 
 <SimplePage
@@ -10,8 +10,11 @@ import { CONTACT, GITHUB_USERNAME } from '../../consts';
 	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">About</h1>
 	<p class="lead text-body-secondary">
 		I am a systems engineer and developer focused on infrastructure that stays reliable, observable,
-		and automated. I have been recognized as a Grafana Champion and enjoy turning messy operational
-		data into dashboards teams actually use.
+		and automated. I have been recognized as a{' '}
+		<a href={GRAFANA.champions} target="_blank" rel="noopener noreferrer">Grafana Champion</a>
+		{' '}and enjoy turning messy operational data into{' '}
+		<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a>
+		dashboards teams actually use.
 	</p>
 	<p>
 		Most days that means Kubernetes, Linux, Python, and Go — building pipelines and platform pieces
@@ -19,7 +22,7 @@ import { CONTACT, GITHUB_USERNAME } from '../../consts';
 	</p>
 	<p>
 		Outside of work you will often find me under the hood of a classic car or tweaking how something
-		looks in Grafana.
+		looks in <a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a>.
 	</p>
 	<p class="mb-4">
 		<a class="link-dark fw-semibold" href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">

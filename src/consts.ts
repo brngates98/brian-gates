@@ -5,6 +5,12 @@ export const SITE_DESCRIPTION =
 
 export const SITE_URL = "https://briangates.tech";
 
+/** Grafana — product site and community Champions program. */
+export const GRAFANA = {
+  site: "https://grafana.com/",
+  champions: "https://grafana.com/community/champions/",
+} as const;
+
 /** Your GitHub username (used for profile link and default repo URLs). */
 export const GITHUB_USERNAME = "brngates98";
 

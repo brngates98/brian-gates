@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GrafanaChampionPromo from '../components/GrafanaChampionPromo.astro';
 import {
 	SITE_TITLE,
 	SITE_DESCRIPTION,
@@ -33,6 +34,16 @@ const contactPageHref = hrefContact(Astro.url.pathname);
 						<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
 						<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
 					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="py-4 py-md-5 bg-body-tertiary border-bottom" aria-label="Grafana Champion">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-10 col-xl-9">
+					<GrafanaChampionPromo />
 				</div>
 			</div>
 		</div>
