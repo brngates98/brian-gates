@@ -53,11 +53,4 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     url: `https://github.com/${GITHUB_USERNAME}/GrafanaAgents`,
     tags: ["Grafana", "Go", "Observability"],
   },
-  {
-    name: "brian-gates",
-    description:
-      "This site — Astro, static build, GitHub Pages, custom domain briangates.tech.",
-    url: `https://github.com/${GITHUB_USERNAME}/brian-gates`,
-    tags: ["Astro", "GitHub Pages"],
-  },
 ];
