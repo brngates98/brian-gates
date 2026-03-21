@@ -9,6 +9,9 @@ export const SITE_URL = "https://briangates.tech";
 export const GRAFANA = {
   site: "https://grafana.com/",
   champions: "https://grafana.com/community/champions/",
+  /** Official Grafana Champion mark (Storyblok asset used on grafana.com). */
+  championLogo:
+    "https://a-us.storyblok.com/f/1022730/85326c5c3b/gc-logo.png",
 } as const;
 
 /** Your GitHub username (used for profile link and default repo URLs). */

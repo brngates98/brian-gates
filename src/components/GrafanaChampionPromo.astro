@@ -7,44 +7,56 @@ import { GRAFANA } from '../consts';
 		<div class="row align-items-center g-4">
 			<div class="col-sm-auto text-center">
 				<figure class="mb-0 grafana-promo__figure">
-					<!-- Original character: Grafana-orange “metrics bot”, inspired by Grot — not official Grafana art -->
-					<svg
-						class="grafana-promo__bot"
-						viewBox="0 0 128 148"
-						xmlns="http://www.w3.org/2000/svg"
-						aria-hidden="true"
-						focusable="false"
+					<a
+						href={GRAFANA.champions}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="grafana-promo__logo-link d-inline-block"
 					>
-						<ellipse cx="64" cy="92" rx="48" ry="42" fill="#252525" />
-						<ellipse cx="64" cy="82" rx="40" ry="34" fill="#343434" />
-						<rect x="36" y="68" width="56" height="30" rx="5" fill="#141414" />
-						<path
-							d="M42 88 L54 76 L66 84 L78 70 L90 86"
-							stroke="#f46800"
-							stroke-width="3.5"
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
+						<img
+							class="grafana-promo__logo img-fluid"
+							src={GRAFANA.championLogo}
+							alt="Grafana Champion"
+							width="625"
+							height="622"
+							loading="lazy"
+							decoding="async"
 						/>
-						<circle cx="52" cy="56" r="9" fill="#f46800" />
-						<circle cx="76" cy="56" r="9" fill="#f46800" />
-						<circle cx="54" cy="54" r="3.5" fill="#fff" />
-						<circle cx="78" cy="54" r="3.5" fill="#fff" />
-						<path
-							d="M54 44 Q64 38 74 44"
-							stroke="#f46800"
-							stroke-width="2.5"
-							fill="none"
-							stroke-linecap="round"
-						/>
-						<line x1="64" y1="48" x2="64" y2="22" stroke="#f46800" stroke-width="4" stroke-linecap="round" />
-						<circle cx="64" cy="16" r="7" fill="#f46800" />
-						<ellipse cx="48" cy="126" rx="14" ry="9" fill="#2a2a2a" />
-						<ellipse cx="80" cy="126" rx="14" ry="9" fill="#2a2a2a" />
-					</svg>
+					</a>
 					<figcaption class="small text-body-secondary mt-2 mb-0 px-1">
-						A tiny metrics bot — channeling Grafana’s Grot energy
+						Official Grafana Champion artwork — same asset as on{' '}
+						<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">grafana.com</a>
 					</figcaption>
+					<!-- Tiny friendly bot — original doodle, not Grafana IP -->
+					<div class="grafana-promo__buddy mt-3" aria-hidden="true">
+						<svg
+							class="grafana-promo__bot"
+							viewBox="0 0 96 88"
+							xmlns="http://www.w3.org/2000/svg"
+							focusable="false"
+						>
+							<ellipse cx="48" cy="58" rx="34" ry="28" fill="#2a2a2a" />
+							<circle cx="38" cy="48" r="6" fill="#f46800" />
+							<circle cx="58" cy="48" r="6" fill="#f46800" />
+							<path
+								d="M40 38 Q48 34 56 38"
+								stroke="#f46800"
+								stroke-width="2"
+								fill="none"
+								stroke-linecap="round"
+							/>
+							<line x1="48" y1="42" x2="48" y2="24" stroke="#f46800" stroke-width="3" stroke-linecap="round" />
+							<circle cx="48" cy="20" r="5" fill="#f46800" />
+							<path
+								d="M34 62 L42 56 L48 60 L54 52 L62 58"
+								stroke="#f46800"
+								stroke-width="2"
+								fill="none"
+								stroke-linecap="round"
+							/>
+						</svg>
+						<span class="grafana-promo__buddy-label">your metrics pal</span>
+					</div>
 				</figure>
 			</div>
 			<div class="col">
@@ -80,16 +92,45 @@ import { GRAFANA } from '../consts';
 		border: 1px solid rgba(0, 0, 0, 0.06) !important;
 	}
 	.grafana-promo__figure {
-		max-width: 11rem;
+		max-width: 14rem;
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.grafana-promo__bot {
-		width: 7.5rem;
-		height: auto;
+	.grafana-promo__logo-link {
+		text-decoration: none;
+		border-radius: 0.5rem;
+		transition: transform 0.15s ease, filter 0.15s ease;
+	}
+	.grafana-promo__logo-link:hover {
+		transform: scale(1.02);
+		filter: brightness(1.03);
+	}
+	.grafana-promo__logo {
 		display: block;
 		margin: 0 auto;
-		filter: drop-shadow(0 6px 12px rgba(244, 104, 0, 0.15));
+		max-height: 10rem;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
+	}
+	.grafana-promo__buddy {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		opacity: 0.92;
+	}
+	.grafana-promo__bot {
+		width: 3.25rem;
+		height: auto;
+		display: block;
+	}
+	.grafana-promo__buddy-label {
+		font-size: 0.7rem;
+		color: var(--bs-secondary-color);
+		font-style: italic;
+		letter-spacing: 0.02em;
 	}
 	.ls-wide {
 		letter-spacing: 0.12em;
