@@ -1,16 +1,27 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
+import ServicesInquiryForm from '../../components/ServicesInquiryForm.astro';
 import { CONTACT, GITHUB_USERNAME } from '../../consts';
 import { hrefAbout, hrefBlog, hrefContact, hrefHome } from '../../utils/sitePaths';
 
 const pathname = Astro.url.pathname;
+const thanks = Astro.url.searchParams.has('thanks');
 ---
 
 <SimplePage
 	title="Services — Brian Gates"
-	description="Contract consulting and development: infrastructure, networking, virtualization, and storage."
+	description="Contract consulting, infrastructure, web design, site management, hosting, and development."
 >
 	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">Services</h1>
+
+	{
+		thanks && (
+			<div class="alert alert-success mb-4" role="status">
+				Thanks — your services inquiry was sent. I will follow up by email soon.
+			</div>
+		)
+	}
+
 	<p class="lead text-body-secondary">
 		I am <strong>open to contract engagements</strong> — from short advisory and project consulting through
 		architecture reviews, implementation planning, and hands-on development work. If you need someone who
@@ -24,6 +35,13 @@ const pathname = Astro.url.pathname;
 
 	<h2 class="h4 fw-bold mt-5 mb-3">Areas I work in</h2>
 	<ul class="mb-4">
+		<li>
+			<strong>Web design, management &amp; hosting</strong> — Modern, fast static sites and small-business
+			web presence; ongoing <strong>content and technical management</strong> (updates, DNS, SSL, performance);
+			<strong>hosting</strong> guidance and hands-on setup aligned with your stack — whether that is GitHub Pages,
+			a VPS, or a managed provider. Good fit when you want a site that stays maintainable and does not become a
+			science project.
+		</li>
 		<li>
 			<strong>Networking</strong> — Enterprise and campus design and operations; <strong>Cisco</strong> routing
 			and switching; <strong>UniFi</strong> / Ubiquiti Wi‑Fi and site design; monitoring and troubleshooting. I
@@ -56,11 +74,19 @@ const pathname = Astro.url.pathname;
 		for public code and integrations.
 	</p>
 
-	<p class="mb-4">
-		<strong>Next step:</strong> use the <a href={hrefContact(pathname)}>contact form</a> or email{' '}
-		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-		— include timeline, stack, and what you need. I will respond with availability and whether we are a good fit.
+	<h2 class="h4 fw-bold mt-5 mb-3" id="inquire">Services inquiry</h2>
+	<p class="text-body-secondary mb-4">
+		Use the form below for <strong>scoped work</strong> — web, hosting, infrastructure, or development. It asks for
+		timeline, budget band, and what you need so we can have a productive first conversation. For general questions,
+		you can still use the <a href={hrefContact(pathname)}>main contact form</a> or email{' '}
+		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
 	</p>
+
+	<div class="card shadow-sm border-0 mb-5">
+		<div class="card-body p-4">
+			<ServicesInquiryForm />
+		</div>
+	</div>
 
 	<p class="mb-0 d-flex flex-wrap gap-2">
 		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
