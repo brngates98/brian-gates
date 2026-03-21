@@ -9,6 +9,7 @@ import {
 	CONTACT,
 	GITHUB_USERNAME,
 } from '../consts';
+import { sitePath } from '../utils/sitePath';
 ---
 
 <!doctype html>
@@ -34,7 +35,7 @@ import {
 								load. Outside of work I restore classic cars and experiment with data visualization.
 							</p>
 							<div class="d-flex flex-wrap gap-2 justify-content-center">
-								<a class="btn btn-primary px-4" href="/about/">About</a>
+								<a class="btn btn-primary px-4" href={sitePath('/about/')}>About</a>
 								<a class="btn btn-outline-secondary px-4" href="#contact">Contact</a>
 							</div>
 						</div>

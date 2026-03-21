@@ -1,6 +1,7 @@
 ---
 import SimplePage from '../../layouts/SimplePage.astro';
 import { CONTACT, GITHUB_USERNAME } from '../../consts';
+import { sitePath } from '../../utils/sitePath';
 ---
 
 <SimplePage
@@ -31,6 +32,6 @@ import { CONTACT, GITHUB_USERNAME } from '../../consts';
 		<a class="link-dark fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 	</p>
 	<p class="mb-0">
-		<a class="btn btn-outline-primary btn-sm" href="/">← Home</a>
+		<a class="btn btn-outline-primary btn-sm" href={sitePath('/')}>← Home</a>
 	</p>
 </SimplePage>
