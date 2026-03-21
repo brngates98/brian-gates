@@ -5,7 +5,7 @@ const today = new Date();
 ---
 
 <footer class="footer-portfolio mt-auto border-top bg-body-tertiary">
-	<div class="container py-4">
+	<div class="container py-4 px-3">
 		<p class="text-center text-body-secondary small mb-2 mb-md-0">
 			&copy; {today.getFullYear()} Brian Gates
 		</p>
@@ -20,7 +20,7 @@ const today = new Date();
 				)
 			}
 			<span class="text-secondary mx-2">·</span>
-			<a class="link-secondary text-decoration-none" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+			<a class="link-secondary text-decoration-none text-break" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 		</p>
 	</div>
 </footer>

@@ -29,12 +29,12 @@ const blogHref = hrefBlog(Astro.url.pathname);
 						Python, and Go — and care about metrics that matter and operations that stay calm under
 						load. Outside of work I restore classic cars and experiment with data visualization.
 					</p>
-					<div class="d-flex flex-wrap gap-2 justify-content-center">
+					<div class="d-grid gap-2 d-sm-flex flex-sm-wrap justify-content-sm-center">
 						<a class="btn btn-primary px-4" href="about/">About</a>
 						<a class="btn btn-outline-primary px-4" href="services/">Services</a>
 						<a class="btn btn-outline-primary px-4" href={blogHref}>Blog</a>
 						<a class="btn btn-outline-primary px-4" href={contactPageHref}>Message</a>
-						<a class="btn btn-outline-secondary px-4" href={`mailto:${CONTACT.email}`}>Email</a>
+						<a class="btn btn-outline-secondary px-4 text-break" href={`mailto:${CONTACT.email}`}>Email</a>
 					</div>
 				</div>
 			</div>
@@ -92,7 +92,7 @@ const blogHref = hrefBlog(Astro.url.pathname);
 			<p class="text-body-secondary mx-auto mb-4" style="max-width: 28rem;">
 				Prefer a form? <a href={contactPageHref}>Send a message</a> — or use the links below.
 			</p>
-			<div class="d-flex flex-wrap gap-2 justify-content-center">
+			<div class="d-grid gap-2 d-sm-flex flex-sm-wrap justify-content-sm-center px-1">
 				<a
 					class="btn btn-dark"
 					href={`https://github.com/${GITHUB_USERNAME}`}
@@ -108,7 +108,7 @@ const blogHref = hrefBlog(Astro.url.pathname);
 						</a>
 					)
 				}
-				<a class="btn btn-outline-primary" href={`mailto:${CONTACT.email}`}>
+				<a class="btn btn-outline-primary text-break" href={`mailto:${CONTACT.email}`}>
 					{CONTACT.email}
 				</a>
 			</div>

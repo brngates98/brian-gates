@@ -21,8 +21,8 @@ const brandHref = hrefHome(Astro.url.pathname);
 			>
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarMain">
-				<ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+			<div class="collapse navbar-collapse pb-2 pb-lg-0" id="navbarMain">
+				<ul class="navbar-nav ms-auto mb-0 mb-lg-0 align-items-lg-center">
 					<li class="nav-item">
 						<HeaderLink variant="home">Home</HeaderLink>
 					</li>
@@ -40,7 +40,7 @@ const brandHref = hrefHome(Astro.url.pathname);
 					</li>
 				</ul>
 				<a
-					class="btn btn-outline-light btn-sm ms-lg-3"
+					class="btn btn-outline-light btn-sm ms-lg-3 mt-2 mt-lg-0 w-100 w-lg-auto"
 					href={`https://github.com/${GITHUB_USERNAME}`}
 					target="_blank"
 					rel="noopener noreferrer"

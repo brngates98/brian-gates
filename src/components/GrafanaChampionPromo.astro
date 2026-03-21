@@ -32,7 +32,7 @@ import { GRAFANA } from '../consts';
 					program — helping folks get more from observability, dashboards, and the open source ecosystem around
 					<a href={GRAFANA.site} target="_blank" rel="noopener noreferrer">Grafana</a>.
 				</p>
-				<div class="d-flex flex-wrap gap-2">
+				<div class="d-grid gap-2 d-sm-flex flex-sm-wrap">
 					<a class="btn btn-sm btn-primary" href={GRAFANA.site} target="_blank" rel="noopener noreferrer">
 						Grafana.com
 					</a>
@@ -65,9 +65,11 @@ import { GRAFANA } from '../consts';
 		border-radius: 0.5rem;
 		transition: transform 0.15s ease, filter 0.15s ease;
 	}
-	.grafana-promo__logo-link:hover {
-		transform: scale(1.02);
-		filter: brightness(1.03);
+	@media (hover: hover) and (pointer: fine) {
+		.grafana-promo__logo-link:hover {
+			transform: scale(1.02);
+			filter: brightness(1.03);
+		}
 	}
 	.grafana-promo__logo {
 		display: block;

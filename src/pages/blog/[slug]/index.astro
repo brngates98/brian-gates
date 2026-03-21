@@ -47,7 +47,7 @@ function formatDate(d: Date): string {
 			<Content />
 		</div>
 	</article>
-	<p class="mt-5 mb-0 d-flex flex-wrap gap-2">
+	<p class="mt-5 mb-0 d-grid gap-2 d-sm-flex flex-sm-wrap">
 		<a class="btn btn-outline-primary btn-sm" href={hrefBlog(pathname)}>← All posts</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefHome(pathname)}>Home</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefAbout(pathname)}>About</a>
@@ -69,8 +69,5 @@ function formatDate(d: Date): string {
 	}
 	.blog-post__body p {
 		margin-bottom: 1rem;
-	}
-	.blog-post__body a {
-		font-weight: 500;
 	}
 </style>

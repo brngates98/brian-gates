@@ -36,7 +36,7 @@ const pathname = Astro.url.pathname;
 		<span class="text-secondary mx-2">·</span>
 		<a class="link-dark fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
 	</p>
-	<p class="mb-0 d-flex flex-wrap gap-2">
+	<p class="mb-0 d-grid gap-2 d-sm-flex flex-sm-wrap">
 		<a class="btn btn-outline-primary btn-sm" href={hrefHome(pathname)}>← Home</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefBlog(pathname)}>Blog</a>
 		<a class="btn btn-outline-secondary btn-sm" href={hrefServices(pathname)}>Services</a>
