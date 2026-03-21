@@ -24,5 +24,43 @@ const { title, description, seo } = Astro.props;
 			<slot />
 		</main>
 		<Footer />
+
+		<!-- Grafana Faro RUM (Web SDK + tracing) — loads from CDN; see https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/ -->
+		<script is:inline>
+			(function () {
+				var webSdkScript = document.createElement('script');
+				webSdkScript.src =
+					'https://unpkg.com/@grafana/faro-web-sdk@2/dist/bundle/faro-web-sdk.iife.js';
+
+				webSdkScript.onload = function () {
+					window.GrafanaFaroWebSdk.initializeFaro({
+						url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/d7755bacae27e72368c37cf1a31a302c',
+						app: {
+							name: 'briangates.tech',
+							version: '1.0.0',
+							environment: 'production',
+						},
+						sessionTracking: {
+							samplingRate: 1,
+							persistent: true,
+						},
+					});
+
+					var webTracingScript = document.createElement('script');
+					webTracingScript.src =
+						'https://unpkg.com/@grafana/faro-web-tracing@2/dist/bundle/faro-web-tracing.iife.js';
+
+					webTracingScript.onload = function () {
+						window.GrafanaFaroWebSdk.faro.instrumentations.add(
+							new window.GrafanaFaroWebTracing.TracingInstrumentation()
+						);
+					};
+
+					document.head.appendChild(webTracingScript);
+				};
+
+				document.head.appendChild(webSdkScript);
+			})();
+		</script>
 	</body>
 </html>
