@@ -86,10 +86,23 @@ const structuredData = {
 };
 
 const jsonLdRaw = JSON.stringify(structuredData);
+
+const gaMeasurementId = 'G-P73TT5C3EQ';
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+
+<!-- Google tag (gtag.js) -->
+<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+<script is:inline define:vars={{ gaMeasurementId }}>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+	gtag('config', gaMeasurementId);
+</script>
 <meta
 	name="viewport"
 	content="width=device-width, initial-scale=1, viewport-fit=cover"
