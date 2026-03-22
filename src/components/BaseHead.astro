@@ -23,8 +23,31 @@ const canonicalURL = new URL(pathname, Astro.site);
 const canonicalHref = canonicalURL.href;
 
 const siteOrigin = SITE_URL.replace(/\/$/, '');
-const defaultOgImage = `${siteOrigin}/favicon.svg`;
-const ogImageAbs = defaultOgImage;
+
+/** Default Open Graph / Twitter image (see `public/og-default.png`). */
+const OG_DEFAULT_PATH = '/og-default.png';
+const OG_DEFAULT_WIDTH = 1376;
+const OG_DEFAULT_HEIGHT = 768;
+
+function resolveOgImageUrl(origin: string, ogImage?: string): string {
+	if (!ogImage) {
+		return `${origin}${OG_DEFAULT_PATH}`;
+	}
+	if (ogImage.startsWith('https://') || ogImage.startsWith('http://')) {
+		return ogImage;
+	}
+	const path = ogImage.startsWith('/') ? ogImage : `/${ogImage}`;
+	return `${origin}${path}`;
+}
+
+const ogImageAbs = resolveOgImageUrl(siteOrigin, seo?.ogImage);
+const usesDefaultOgImage = !seo?.ogImage;
+const ogImageWidth = usesDefaultOgImage
+	? OG_DEFAULT_WIDTH
+	: (seo?.ogImageWidth ?? undefined);
+const ogImageHeight = usesDefaultOgImage
+	? OG_DEFAULT_HEIGHT
+	: (seo?.ogImageHeight ?? undefined);
 
 const iconHref = hrefFavicon(pathname);
 const fontRegular = hrefFont(pathname, 'atkinson-regular.woff');
@@ -41,6 +64,60 @@ const personId = `${siteOrigin}/#person`;
 const websiteId = `${siteOrigin}/#website`;
 
 type JsonLdThing = Record<string, unknown>;
+
+/** BreadcrumbList for nested routes (not emitted on home). */
+function breadcrumbListForPath(
+	path: string,
+	origin: string,
+	seoHeadline?: string,
+): JsonLdThing | null {
+	const trimmed = path.replace(/\/$/, '') || '/';
+	const segments = trimmed === '/' ? [] : trimmed.split('/').filter(Boolean);
+	if (segments.length === 0) {
+		return null;
+	}
+
+	const sectionTitles: Record<string, string> = {
+		about: 'About',
+		services: 'Services',
+		contact: 'Contact',
+		blog: 'Blog',
+	};
+
+	type Crumb = { name: string; item: string };
+	const items: Crumb[] = [{ name: 'Home', item: `${origin}/` }];
+
+	if (segments[0] === 'blog' && segments.length >= 2) {
+		items.push({ name: 'Blog', item: `${origin}/blog/` });
+		items.push({
+			name: seoHeadline ?? 'Post',
+			item: `${origin}/blog/${segments[1]}/`,
+		});
+	} else if (segments[0] === 'blog') {
+		items.push({ name: 'Blog', item: `${origin}/blog/` });
+	} else if (segments.length === 1 && sectionTitles[segments[0]]) {
+		items.push({
+			name: sectionTitles[segments[0]],
+			item: `${origin}/${segments[0]}/`,
+		});
+	} else {
+		return null;
+	}
+
+	if (items.length < 2) {
+		return null;
+	}
+
+	return {
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((c, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			name: c.name,
+			item: c.item,
+		})),
+	};
+}
 
 const jsonLdGraph: JsonLdThing[] = [
 	{
@@ -76,8 +153,13 @@ if (ogType === 'article' && seo?.publishedTime) {
 		publisher: { '@type': 'Person', '@id': personId },
 		mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalHref },
 		url: canonicalHref,
-		image: defaultOgImage,
+		image: ogImageAbs,
 	});
+}
+
+const breadcrumbLd = breadcrumbListForPath(pathname, siteOrigin, seo?.headline);
+if (breadcrumbLd) {
+	jsonLdGraph.push(breadcrumbLd);
 }
 
 const structuredData = {
@@ -92,6 +174,10 @@ const gaMeasurementId = 'G-P73TT5C3EQ';
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
 <!-- Google tag (gtag.js) -->
 <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
@@ -142,7 +228,18 @@ const gaMeasurementId = 'G-P73TT5C3EQ';
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageAbs} />
-<meta property="og:image:alt" content={`${SITE_TITLE} — site icon`} />
+{
+	ogImageWidth && ogImageHeight && (
+		<>
+			<meta property="og:image:width" content={String(ogImageWidth)} />
+			<meta property="og:image:height" content={String(ogImageHeight)} />
+		</>
+	)
+}
+<meta
+	property="og:image:alt"
+	content={`${SITE_TITLE} — systems engineer and developer (briangates.tech)`}
+/>
 <meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:locale" content="en_US" />
 {
