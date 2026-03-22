@@ -10,7 +10,7 @@ const thanks = Astro.url.searchParams.has('thanks');
 
 <SimplePage
 	title="Services — Brian Gates"
-	description="Contract consulting, infrastructure, web design, site management, hosting, and development."
+	description="Contract consulting: software development, infrastructure, observability, web design, hosting, and automation."
 >
 	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">Services</h1>
 
@@ -23,24 +23,23 @@ const thanks = Astro.url.searchParams.has('thanks');
 	}
 
 	<p class="lead text-body-secondary">
-		I am <strong>open to contract engagements</strong> — from short advisory and project consulting through
-		architecture reviews, implementation planning, and hands-on development work. If you need someone who
-		can bridge operations, infrastructure, and code, let’s talk.
+		I am <strong>open to contract engagements</strong> — from short advisory engagements and architecture reviews
+		to implementation planning and hands-on engineering. If you need someone who can connect operations,
+		infrastructure, and application code, I would be glad to discuss fit.
 	</p>
 	<p>
-		Engagements can be scoped as fixed projects, ongoing part-time support, or targeted deep-dives (for
-		example: observability design, automation, or storage integration). I am happy to align with your
+		Work can be structured as fixed-scope projects, ongoing part-time support, or focused engagements (for example:
+		observability design, storage and platform work, or custom software and automation). I adapt to your existing
 		tools, runbooks, and compliance requirements.
 	</p>
 
 	<h2 class="h4 fw-bold mt-5 mb-3">Areas I work in</h2>
 	<ul class="mb-4">
 		<li>
-			<strong>Web design, management &amp; hosting</strong> — Modern, fast static sites and small-business
-			web presence; ongoing <strong>content and technical management</strong> (updates, DNS, SSL, performance);
-			<strong>hosting</strong> guidance and hands-on setup aligned with your stack — whether that is GitHub Pages,
-			a VPS, or a managed provider. Good fit when you want a site that stays maintainable and does not become a
-			science project.
+			<strong>Web design, management &amp; hosting</strong> — Modern, performant static sites and small-business
+			web presence; ongoing <strong>content and technical management</strong> (updates, DNS, TLS, performance);
+			<strong>hosting</strong> guidance and implementation aligned with your environment — GitHub Pages, VPS, or
+			managed providers. Suited to teams that want a site that remains straightforward to operate and evolve.
 		</li>
 		<li>
 			<strong>Networking</strong> — Enterprise and campus design and operations; <strong>Cisco</strong> routing
@@ -61,8 +60,17 @@ const thanks = Astro.url.searchParams.has('thanks');
 			Comfortable coordinating with vendors and internal teams on performance and change windows.
 		</li>
 		<li>
-			<strong>Observability &amp; automation</strong> — Grafana, metrics and logging pipelines, Kubernetes and
-			Linux platforms, Python and Go for tooling (see featured projects on the home page).
+			<strong>Development &amp; custom tooling</strong> — Application and systems programming in{' '}
+			<strong>Go</strong>, <strong>C</strong>, and <strong>Python</strong>; APIs and services built with current{' '}
+			<strong>web frameworks</strong> where requirements go beyond a static site; <strong>automation</strong> including
+			CI/CD integration, orchestration, and third-party integrations; and <strong>custom tooling</strong> such as
+			CLIs, internal services, and data processing utilities. Emphasis on production-ready delivery, clear structure,
+			and maintainability over time.
+		</li>
+		<li>
+			<strong>Observability &amp; automation</strong> — Grafana, metrics and logging pipelines, Kubernetes and Linux
+			platforms; design and implementation of exporters, health checks, and automation integrated with your existing
+			observability stack (see featured projects on the home page).
 		</li>
 	</ul>
 
@@ -76,9 +84,9 @@ const thanks = Astro.url.searchParams.has('thanks');
 
 	<h2 class="h4 fw-bold mt-5 mb-3" id="inquire">Services inquiry</h2>
 	<p class="text-body-secondary mb-4">
-		Use the form below for <strong>scoped work</strong> — web, hosting, infrastructure, or development. It asks for
-		timeline, budget band, and what you need so we can have a productive first conversation. For general questions,
-		you can still use the <a href={hrefContact(pathname)}>main contact form</a> or email{' '}
+		Use the form below for <strong>scoped engagements</strong> across web, hosting, infrastructure, or development.
+		It includes timeline, budget range, and scope so we can schedule a focused initial discussion. For general
+		inquiries, use the <a href={hrefContact(pathname)}>contact form</a> or email{' '}
 		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
 	</p>
 
