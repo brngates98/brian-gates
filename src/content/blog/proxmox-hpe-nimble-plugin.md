@@ -60,11 +60,13 @@ You want JSON with **`data.session_token`**. If that’s there, the control plan
 
 ---
 
-## Install the plugin on every node
+## Install Plugin
 
-Cluster config for storage replicates via corosync, but the **plugin package must be installed on each node** — otherwise that node has no idea how to talk to Nimble.
+The **same script** can install the plugin on a **single node** or on a **whole cluster**: run it locally on one host, or pass **`--all-nodes`** so it installs on every cluster member over SSH. Use the single-node commands below for one machine, or the **`--all-nodes`** block when you want the whole cluster covered.
 
-This guide assumes you use the **install script** from the repo. In short, it: **checks** you’re on a real Proxmox VE host; **adds** the project APT repo (or you can pass **`--version`** to pull a specific `.deb` from GitHub instead); **runs** `apt update` and installs **`open-iscsi`** plus **`libpve-storage-nimble-perl`** (iSCSI stack + initiator IQN on the box, plus the storage plugin); then **restarts** the usual PVE daemons (`pvedaemon`, `pveproxy`, `pvestatd`, scheduler, HA if present) so the new backend is picked up. With **`--all-nodes`**, it walks **every cluster member over SSH** and does the same thing so you’re not repeating installs by hand.
+In a cluster, **each** node that will use Nimble storage still needs the package on that host; **storage** definitions sync via corosync, but the **plugin** does not.
+
+This guide assumes you use the **install script** from the repo. In short, it: **checks** you’re on a real Proxmox VE host; **adds** the project APT repo (or you can pass **`--version`** to pull a specific `.deb` from GitHub instead); **runs** `apt update` and installs **`open-iscsi`** plus **`libpve-storage-nimble-perl`** (iSCSI stack + initiator IQN on the box, plus the storage plugin); then **restarts** the usual PVE daemons (`pvedaemon`, `pveproxy`, `pvestatd`, scheduler, HA if present) so the new backend is picked up.
 
 ```bash
 # Single node
@@ -95,12 +97,56 @@ sudo systemctl enable multipathd
 sudo systemctl start multipathd
 ```
 
-Then edit **`/etc/multipath.conf`**: use a blacklist for generic devices, **`blacklist_exceptions`** for Nimble (`vendor "Nimble"` / `product "Server"`), and a **`devices`** block tuned for Nimble. The [plugin README](https://github.com/brngates98/pve-nimble-plugin/blob/main/README.md#multipath-optional) has a full **Nimble-only** example — copy that rather than inventing one.
+Then put something like this in **`/etc/multipath.conf`** — **Nimble-only**: blacklist everything by default, then allow Nimble devices and tune them for ALUA (same example as the [plugin README](https://github.com/brngates98/pve-nimble-plugin/blob/main/README.md#multipath-optional)):
+
+```text
+defaults {
+    user_friendly_names yes
+    find_multipaths     no
+}
+blacklist {
+    devnode "^(ram|raw|loop|fd|md|dm-|sr|scd|st)[0-9]*"
+    devnode "^hd[a-z]"
+    device { vendor ".*" product ".*" }
+}
+blacklist_exceptions {
+    device { vendor "Nimble" product "Server" }
+}
+devices {
+    device {
+        vendor               "Nimble"
+        product              "Server"
+        path_grouping_policy group_by_prio
+        prio                 "alua"
+        hardware_handler     "1 alua"
+        path_selector        "service-time 0"
+        path_checker         tur
+        no_path_retry        30
+        failback             immediate
+        fast_io_fail_tmo     5
+        dev_loss_tmo         infinity
+    }
+}
+```
 
 ```bash
 sudo multipathd reconfigure
 sudo multipath -ll
 ```
+
+**Other Proxmox nodes in the cluster:** set up **`multipath-tools`** on each node the same way (`apt install`, enable `multipathd`). After you’re happy with **`/etc/multipath.conf`** on one host, copy it to the others and reload multipath there (replace hostnames or IPs with your nodes):
+
+```bash
+scp /etc/multipath.conf root@<pve2-hostname-or-ip>:/etc/multipath.conf
+scp /etc/multipath.conf root@<pve3-hostname-or-ip>:/etc/multipath.conf
+```
+
+```bash
+ssh root@<pve2-hostname-or-ip> 'multipathd reconfigure && multipath -ll'
+ssh root@<pve3-hostname-or-ip> 'multipathd reconfigure && multipath -ll'
+```
+
+You need **root SSH** to the other nodes (normal on Proxmox) or copy to your admin user and **`sudo`** move into place. Repeat for every node that will use Nimble with multipath.
 
 *[Screenshot: `multipath -ll` output showing a Nimble LUN with multiple paths]*
 
@@ -108,19 +154,103 @@ sudo multipath -ll
 
 ## Add Nimble storage to Proxmox
 
-From **any** node (config syncs cluster-wide):
+Run **`pvesm add`** from **any** node — storage definitions sync across the cluster. Pick a **storage ID** (the name Proxmox shows) that you’ll recognize, e.g. `nimble-prod`.
+
+### Quick setup
+
+Minimal example: Nimble management URL, API user, password, and disk images as content. The plugin can **create** an initiator group named **`pve-<nodename>`** if you don’t name one.
 
 ```bash
-pvesm add nimble <storage_id> \
+pvesm add nimble nimble-prod \
   --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
   --username <API_USER> \
   --password '<API_PASSWORD>' \
   --content images
 ```
 
-Name `<storage_id>` something you’ll recognize (e.g. `nimble-prod`). You **don’t** have to pre-create an initiator group: the plugin can create **`pve-<nodename>`** and attach this host. If you already use a named group on the array, add **`--initiator_group <name>`**.
+*[Screenshot: Terminal after successful `pvesm add nimble …`]*
 
-If you **disabled** auto discovery, you’ll run discovery and login on each node yourself — the full guide has the exact **`iscsiadm`** sequence:
+*[Screenshot: Datacenter → Storage — Nimble entry, Content includes Disk image]*
+
+### More `pvesm` examples (optional)
+
+Click to expand patterns you might use alongside or instead of the minimal command.
+
+<details>
+<summary><strong>Existing initiator group on the array</strong></summary>
+
+If you already have an initiator group in Nimble (instead of letting the plugin create <code>pve-&lt;nodename&gt;</code>):
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --initiator_group <GROUP_NAME_ON_NIMBLE> \
+  --content images
+```
+
+</details>
+
+<details>
+<summary><strong>Default pool and volume collection</strong></summary>
+
+Put new volumes in a specific **pool** and add them to a **volume collection** (useful for Nimble-side snapshot schedules and grouping):
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --pool_name <POOL_NAME> \
+  --volume_collection <COLLECTION_NAME> \
+  --content images
+```
+
+</details>
+
+<details>
+<summary><strong>Prefix for volume names on the array</strong></summary>
+
+Prefix every volume name Nimble sees (helps when multiple environments share one array):
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --vnprefix <PREFIX_> \
+  --content images
+```
+
+</details>
+
+<details>
+<summary><strong>Extra discovery IPs or disable auto discovery</strong></summary>
+
+By default the plugin runs **iSCSI discovery when storage activates** and uses subnets from the Nimble API. If you need **additional** portals beyond what the API returns:
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --iscsi_discovery_ips <IP1>,<IP2> \
+  --content images
+```
+
+To **turn off** activate-time discovery and drive iSCSI yourself (each node):
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --auto_iscsi_discovery 0 \
+  --content images
+```
+
+Then on each node, discovery and login manually, for example:
 
 ```bash
 sudo iscsiadm -m discovery -t sendtargets -p <NIMBLE_DISCOVERY_IP>
@@ -128,9 +258,58 @@ sudo iscsiadm -m node --op update -n node.startup -v automatic
 sudo iscsiadm -m node --login
 ```
 
-*[Screenshot: Terminal after successful `pvesm add nimble …`]*
+</details>
 
-*[Screenshot: Datacenter → Storage — Nimble entry, Content includes Disk image]*
+<details>
+<summary><strong>Verify TLS to the Nimble API</strong></summary>
+
+If the array presents a certificate your nodes trust, you can enable SSL verification (default is off for common lab/self-signed setups):
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --check_ssl yes \
+  --content images
+```
+
+</details>
+
+<details>
+<summary><strong>Debug logging (troubleshooting)</strong></summary>
+
+```bash
+pvesm add nimble nimble-prod \
+  --address https://<NIMBLE_MGMT_IP_OR_FQDN> \
+  --username <API_USER> \
+  --password '<API_PASSWORD>' \
+  --debug 1 \
+  --content images
+```
+
+Levels: `0` off, `1` basic, `2` verbose, `3` trace. You can also change later with **`pvesm set <storage_id> --debug 1`**.
+
+</details>
+
+### Nimble storage options (reference)
+
+| Option | Role |
+|--------|------|
+| **`address`** | Nimble management URL (`https://host` — API port 5392 is used by default). |
+| **`username`** / **`password`** | REST API credentials. Password is stored in cluster config / priv files like other PVE backends. |
+| **`content`** | What Proxmox may store here; **`images`** is typical for VM disks. |
+| **`initiator_group`** | Optional. Use an existing Nimble initiator group name; if omitted, the plugin can create **`pve-<nodename>`**. |
+| **`pool_name`** | Optional. Default Nimble pool for new volumes. |
+| **`volume_collection`** | Optional. Add new volumes to this collection (e.g. for array snapshot policies). |
+| **`vnprefix`** | Optional. Prefix for volume names on the array. |
+| **`auto_iscsi_discovery`** | Default on. Set **`0`** or **`no`** to skip activate-time discovery (you manage `iscsiadm` yourself). |
+| **`iscsi_discovery_ips`** | Optional. Extra comma-separated discovery IPs if the API path isn’t enough. |
+| **`check_ssl`** | Default **`no`**. Set **`yes`** to verify TLS to the Nimble API. |
+| **`token_ttl`** | Optional. Session token cache lifetime in seconds (default **3600**). |
+| **`debug`** | Optional. **`0`–`3`** — plugin log verbosity for troubleshooting. |
+
+After the store exists, use **`pvesm set <storage_id> …`** to adjust most options without removing storage. Custom storage types are often edited from the shell or **`storage.cfg`** rather than the full GUI on stock PVE.
 
 ---
 
