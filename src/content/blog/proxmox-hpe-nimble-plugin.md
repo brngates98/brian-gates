@@ -1,6 +1,6 @@
 ---
 title: "From zero to fully protected Nimble storage on Proxmox"
-description: "Use Nimble snapshotting and replication with Proxmox with less CLI and less busywork — same setup path as the fully protected storage guide."
+description: "Use Nimble snapshotting and replication with Proxmox with less CLI and less busywork."
 pubDate: 2026-03-26
 unlisted: true
 ---
@@ -347,14 +347,14 @@ Optionally **clone from a snapshot** to spawn a new VM from that point. After th
 
 ---
 
-## When you need to restore from the array (not only from PVE’s list)
+## Restore: Proxmox rollback vs Nimble-only snapshots
 
-The long guide spells out three patterns; here’s the short version:
+Not every useful snapshot shows up under **VM → Snapshots** in Proxmox. If you took the snapshot there, rollback is built in. If the snapshot exists **only on the array** (protection schedule, manual snapshot in Nimble, etc.), you recover from Nimble instead.
 
-- **PVE snapshot rollback** — use **VM → Snapshots → Rollback** when the snapshot was taken in Proxmox and you want the **whole VM** back. That drives the array in place for all disks in that snapshot.
-- **Array-only snapshot** (schedule or manual in Nimble) — either **clone** the snapshot to a **new** volume (safe, attach as extra disk for recovery) or **restore in place** on the volume (destructive; VM should be off). The repo doc walks through Nimble UI steps and even a **curl** example for **`POST …/volumes/<id>/actions/restore`** if you need automation.
+- **You have a Proxmox VM snapshot** — use **VM → Snapshots → Rollback** to put the VM back to that point. That updates the underlying Nimble volumes in place for every disk that was part of that snapshot.
+- **You only have a Nimble snapshot** — clone it to a **new** volume (safe; attach as an extra disk for recovery) or **restore in place** on the live volume (destructive; shut the VM down first). Do that in the **Nimble UI** or via the REST API (e.g. **`POST …/volumes/<id>/actions/restore`** with **`base_snap_id`**).
 
-If you’re doing single-disk gymnastics, PVE’s rollback is **VM-wide**, so you might clone from snapshot or use Nimble for one volume — the full doc has a paragraph on that tradeoff.
+**One disk vs whole VM:** Proxmox rollback is **VM-wide**. To rewind a **single** disk to a point in time, you often clone or restore that volume on the array, or clone the VM snapshot and move only the disk you need.
 
 ---
 
@@ -369,12 +369,6 @@ If you’re doing single-disk gymnastics, PVE’s rollback is **VM-wide**, so yo
 | Multipath not grouping | **`multipath.conf`** exceptions + **`multipathd reconfigure`**. |
 
 More detail, debug flags, and **`NIMBLE_DEBUG`** live in the [README troubleshooting](https://github.com/brngates98/pve-nimble-plugin/blob/main/README.md#troubleshooting).
-
----
-
-## Where to read the full playbook
-
-The repo’s [**00 – Setting up fully protected storage**](https://github.com/brngates98/pve-nimble-plugin/blob/main/docs/00-SETUP-FULLY-PROTECTED-STORAGE.md) is the authoritative checklist: same steps, more tables, restore workflows, and quick reference. Use this post as the hand-wavy tour; use that doc when you’re building it for real.
 
 ---
 
