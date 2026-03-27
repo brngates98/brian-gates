@@ -5,9 +5,9 @@ import { hrefAbout, hrefContact, hrefHome, hrefServices } from '../../utils/site
 
 const pathname = Astro.url.pathname;
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = (await getCollection('blog'))
+	.filter((p) => !p.data.unlisted)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 function formatDate(d: Date): string {
 	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
