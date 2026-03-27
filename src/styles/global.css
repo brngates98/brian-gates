@@ -3,6 +3,11 @@
   Mobile: avoid horizontal scroll, readable type, sensible touch targets.
  */
 
+/* Bootstrap’s default `--bs-code-color` is magenta/pink; use a readable blue for inline code. */
+:root {
+	--bs-code-color: #0d47a1;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
