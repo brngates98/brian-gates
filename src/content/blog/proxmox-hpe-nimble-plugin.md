@@ -1,13 +1,13 @@
 ---
 title: "From zero to fully protected Nimble storage on Proxmox"
-description: "The same journey as the full setup guide — plan the network, prep the array, install the plugin, optional multipath, then prove it with a VM disk and snapshots."
+description: "Use Nimble snapshotting and replication with Proxmox with less CLI and less busywork — same setup path as the fully protected storage guide."
 pubDate: 2026-03-26
 unlisted: true
 ---
 
-“Fully protected storage” here means something specific: **one Nimble volume per VM disk** (no giant LUN plus LVM gymnastics), **snapshots and rollback from Proxmox**, **resize from the UI**, and optionally **multipath** when you have redundant paths. The [pve-nimble-plugin](https://github.com/brngates98/pve-nimble-plugin) is what ties Proxmox to the array: REST API for volume work, iSCSI for data, and **activate-time discovery** by default so you are not hand-wiring portals on every host unless you want to.
+This walkthrough uses the [pve-nimble-plugin](https://github.com/brngates98/pve-nimble-plugin) to put **HPE Nimble** behind **Proxmox VE** in a normal way: you create and resize VM disks in Proxmox, take **snapshots** and **rollback** from there, and keep **replication** and protection policies where they already live—the Nimble side.
 
-This post follows the same story as the repo’s step-by-step guide ([*Setting up fully protected storage*](https://github.com/brngates98/pve-nimble-plugin/blob/main/docs/00-SETUP-FULLY-PROTECTED-STORAGE.md)) — just written like something you’d send a colleague before their first build.
+The goal is simply fewer manual steps and less repeated CLI on each node than you’d need if you were mapping LUNs and iSCSI yourself for every disk.
 
 ---
 
@@ -15,8 +15,8 @@ This post follows the same story as the repo’s step-by-step guide ([*Setting u
 
 When you’re done, you should be able to:
 
-- Create VM disks that are **individual Nimble volumes**, not slices of one big LUN.
-- Use **Proxmox VM snapshots** (backed by the array) and **rollback** when something goes wrong.
+- Create VM disks that are **individual Nimble volumes**, not slices of one big LUN—so array snapshot and replication semantics map cleanly to real workloads.
+- Use **Proxmox VM snapshots** (backed by the array) and **rollback** when something goes wrong, without a separate ritual per host.
 - **Grow disks** from Proxmox and extend inside the guest.
 - Optionally run **multipath** so dual fabrics or dual NICs collapse to one device per LUN.
 - Run it all in a **cluster**: storage config syncs; the plugin still has to exist **on every node**.
