@@ -62,9 +62,9 @@ You want JSON with **`data.session_token`**. If that’s there, the control plan
 
 ## Install the plugin on every node
 
-Cluster config for storage replicates via corosync, but the **Perl plugin package must be installed on each node** — otherwise one node simply won’t know how to talk to Nimble.
+Cluster config for storage replicates via corosync, but the **plugin package must be installed on each node** — otherwise that node has no idea how to talk to Nimble.
 
-Scripted install (recommended):
+This guide assumes you use the **install script** from the repo. In short, it: **checks** you’re on a real Proxmox VE host; **adds** the project APT repo (or you can pass **`--version`** to pull a specific `.deb` from GitHub instead); **runs** `apt update` and installs **`open-iscsi`** plus **`libpve-storage-nimble-perl`** (iSCSI stack + initiator IQN on the box, plus the storage plugin); then **restarts** the usual PVE daemons (`pvedaemon`, `pveproxy`, `pvestatd`, scheduler, HA if present) so the new backend is picked up. With **`--all-nodes`**, it walks **every cluster member over SSH** and does the same thing so you’re not repeating installs by hand.
 
 ```bash
 # Single node
@@ -75,38 +75,13 @@ curl -fsSL https://raw.githubusercontent.com/brngates98/pve-nimble-plugin/main/s
 curl -fsSL https://raw.githubusercontent.com/brngates98/pve-nimble-plugin/main/scripts/install-pve-nimble-plugin.sh | sudo bash -s -- --all-nodes
 ```
 
-You can confirm with:
+Use **`--yes`** if you want non-interactive confirmation, **`--version X.Y.Z`** to pin a release. Confirm the package landed with:
 
 ```bash
 dpkg -l | grep libpve-storage-nimble-perl
 ```
 
-The long-form doc also has **manual APT** and **.deb** install paths if you pin versions — same repo.
-
----
-
-## open-iscsi and the IQN
-
-The plugin registers each host with the Nimble using the node’s **iSCSI initiator name**. The scripted install pulls in **`open-iscsi`**; you just need a real IQN on disk.
-
-```bash
-sudo cat /etc/iscsi/initiatorname.iscsi
-```
-
-You should see `InitiatorName=iqn.…`. If you’re fixing it:
-
-```bash
-echo "InitiatorName=iqn.1993-08.org.debian:01:$(hostname)" | sudo tee /etc/iscsi/initiatorname.iscsi
-sudo systemctl restart iscsid
-```
-
-Sanity check that the kernel sees an iSCSI host:
-
-```bash
-ls /sys/class/iscsi_host/
-```
-
-*[Screenshot: Terminal — contents of initiatorname.iscsi and listing of /sys/class/iscsi_host/]*
+*[Screenshot: Installer finishing with “installation complete” (or equivalent) on one node]*
 
 ---
 
@@ -210,7 +185,7 @@ If you’re doing single-disk gymnastics, PVE’s rollback is **VM-wide**, so yo
 |--------------|---------------------|
 | Storage missing on a node | Plugin installed **on every node**? Restart **`pvedaemon`** after install. |
 | Can’t get discovery IPs | At least one iSCSI subnet with a **discovery IP** on the array. |
-| Initiator / ACL errors | Valid **`InitiatorName`** in **`initiatorname.iscsi`**, **`open-iscsi`** installed. |
+| Initiator / ACL errors | Installer pulls in **`open-iscsi`**; if errors persist, check **`/etc/iscsi/initiatorname.iscsi`** (see [README](https://github.com/brngates98/pve-nimble-plugin/blob/main/README.md#troubleshooting)). |
 | No LUN after creating a disk | **`iscsiadm -m session`**, rescan, firewall to discovery IPs. |
 | Multipath not grouping | **`multipath.conf`** exceptions + **`multipathd reconfigure`**. |
 
