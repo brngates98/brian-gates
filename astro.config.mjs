@@ -42,7 +42,6 @@ export default defineConfig({
 	integrations: [
 		sitemap({
 			filter: (page) => {
-				if (page.endsWith("/paul/")) return false;
 				const unlisted = getUnlistedBlogSlugs();
 				return !unlisted.some((slug) =>
 					page.endsWith(`/blog/${slug}/`),
