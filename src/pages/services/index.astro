@@ -10,7 +10,7 @@ const thanks = Astro.url.searchParams.has('thanks');
 
 <SimplePage
 	title="Services — Brian Gates"
-	description="Contract consulting: software development, infrastructure, observability, web design, hosting, and automation."
+	description="Contract consulting and implementation: software development, infrastructure, observability, web design, hosting, and automation."
 >
 	<h1 class="display-6 fw-bold border-bottom pb-3 mb-4">Services</h1>
 
@@ -35,6 +35,16 @@ const thanks = Astro.url.searchParams.has('thanks');
 
 	<h2 class="h4 fw-bold mt-5 mb-3">Areas I work in</h2>
 	<ul class="mb-4">
+		<li>
+			<strong>Consulting services</strong> — Advisory and planning: architecture reviews, technology and platform
+			choices, migration and cutover strategy, operational readiness, and documentation. Engagements can be short
+			workshops, fixed-scope assessments, or ongoing guidance alongside your team.
+		</li>
+		<li>
+			<strong>Implementation services</strong> — Hands-on delivery against agreed scope: build-out, configuration,
+			integration, cutovers, automation, and validation. I work within your change windows, tooling, and compliance
+			expectations so outcomes land in production, not only on paper.
+		</li>
 		<li>
 			<strong>Web design, management &amp; hosting</strong> — Modern, performant static sites and small-business
 			web presence; ongoing <strong>content and technical management</strong> (updates, DNS, TLS, performance);
@@ -84,7 +94,8 @@ const thanks = Astro.url.searchParams.has('thanks');
 
 	<h2 class="h4 fw-bold mt-5 mb-3" id="inquire">Services inquiry</h2>
 	<p class="text-body-secondary mb-4">
-		Use the form below for <strong>scoped engagements</strong> across web, hosting, infrastructure, or development.
+		Use the form below for <strong>scoped engagements</strong> across consulting, implementation, web, hosting,
+		infrastructure, or development.
 		It includes timeline, budget range, and scope so we can schedule a focused initial discussion. For general
 		inquiries, use the <a href={hrefContact(pathname)}>contact form</a> or email{' '}
 		<a class="fw-semibold" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
